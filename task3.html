@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ Информатика — Задание 3. Значение логического выражения</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f5f5f7;
+  --bg-card: #ffffff;
+  --text: #1d1d1f;
+  --text-soft: #515154;
+  --text-muted: #86868b;
+  --border: #d2d2d7;
+  --border-soft: #e8e8ed;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-soft: #e8f4fd;
+  --success: #34c759;
+  --success-soft: #eafaf1;
+  --error: #ff3b30;
+  --error-soft: #fff0ef;
+  --warning: #ff9500;
+  --warning-soft: #fff8eb;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg-soft);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body { padding: 16px; }
+.container { max-width: 1000px; margin: 0 auto; }
+.header { background: var(--bg-card); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); }
+.header-title { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.header-sub { color: var(--text-soft); font-size: 15px; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; font-size: 13px; color: var(--text-muted); }
+.header-meta span { display: flex; align-items: center; gap: 6px; }
+.tabs { display: flex; gap: 8px; background: var(--bg-card); padding: 8px; border-radius: var(--radius); margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); overflow-x: auto; }
+.tab { flex: 1; min-width: 140px; padding: 12px 16px; border: none; background: transparent; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--text-soft); cursor: pointer; transition: all 0.2s; font-family: inherit; white-space: nowrap; }
+.tab:hover { background: var(--bg-soft); color: var(--text); }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tab.active { background: var(--accent); color: white; box-shadow: var(--shadow-sm); }
+.card { background: var(--bg-card); border-radius: var(--radius); padding: 26px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); }
+.card-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em; }
+h3 { font-size: 17px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+p { margin-bottom: 12px; color: var(--text-soft); }
+p:last-child { margin-bottom: 0; }
+ul, ol { margin: 10px 0 14px 24px; color: var(--text-soft); }
+li { margin-bottom: 6px; }
+strong { color: var(--text); font-weight: 600; }
+code { font-family: "Consolas", "Monaco", monospace; background: var(--bg-soft); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+.note { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 10px; margin: 16px 0; font-size: 14px; color: var(--text); }
+.note-warn { background: var(--warning-soft); border-left-color: var(--warning); }
+.note-success { background: var(--success-soft); border-left-color: var(--success); }
+.note-info { background: #f0f9ff; border-left-color: #0ea5e9; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 20px; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.15s; min-height: 44px; min-width: 44px; text-decoration: none; }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--bg-soft); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border-soft); }
+.btn-block { width: 100%; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.task { background: var(--bg-card); border-radius: var(--radius); padding: 22px; margin-bottom: 16px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm); }
+.task-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+.task-num { font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 20px; }
+.task-link { font-size: 12px; color: var(--text-muted); text-decoration: none; padding: 4px 8px; border-radius: 6px; }
+.task-link:hover { color: var(--accent); background: var(--accent-soft); }
+.task-text { color: var(--text); font-size: 15px; margin-bottom: 14px; line-height: 1.65; }
+.expr-box { background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; margin: 12px 0; font-family: "Consolas", "Monaco", monospace; font-size: 15px; font-weight: 600; color: var(--text); text-align: center; }
+.code-block { background: #1e1e1e; color: #d4d4d4; padding: 14px 18px; border-radius: var(--radius-sm); font-family: "Consolas", "Monaco", monospace; font-size: 13px; overflow-x: auto; margin: 10px 0; line-height: 1.6; white-space: pre; }
+.truth-table { border-collapse: collapse; font-size: 13px; background: var(--bg-card); border: 2px solid var(--border); margin: 10px 0; }
+.truth-table th, .truth-table td { border: 1px solid var(--border); padding: 6px 14px; text-align: center; font-weight: 500; }
+.truth-table th { background: var(--bg-soft); font-weight: 700; color: var(--text); }
+.ops-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 14px 0; }
+.op-card { background: var(--bg-soft); border: 1px solid var(--border-soft); border-radius: var(--radius-sm); padding: 14px 16px; }
+.op-card-title { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.op-symbol { font-size: 24px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.op-name { font-size: 14px; color: var(--text); margin-bottom: 6px; }
+.op-python { font-size: 13px; font-family: "Consolas", "Monaco", monospace; color: var(--text-soft); background: var(--bg-card); padding: 4px 8px; border-radius: 6px; display: inline-block; }
+.input-group { margin-top: 14px; }
+.input-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-soft); margin-bottom: 6px; }
+.input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--bg-card); color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; min-height: 44px; }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.input.correct { border-color: var(--success); background: var(--success-soft); }
+.input.wrong { border-color: var(--error); background: var(--error-soft); }
+.feedback { margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 14px; display: none; }
+.feedback.show { display: block; }
+.feedback.success { background: var(--success-soft); color: #1b7a3d; border: 1px solid #b7ebc9; }
+.feedback.error { background: var(--error-soft); color: #c41e14; border: 1px solid #f5c6c2; }
+.solution { margin-top: 12px; padding: 16px 18px; background: var(--bg-soft); border-radius: var(--radius-sm); border-left: 3px solid var(--accent); font-size: 14px; line-height: 1.7; display: none; }
+.solution.show { display: block; }
+.solution-title { font-weight: 600; margin-bottom: 8px; color: var(--text); }
+.solution p { margin-bottom: 10px; }
+.solution .formula { font-weight: 700; color: var(--text); font-family: "Consolas", "Monaco", monospace; background: var(--bg-card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+.results-panel { background: var(--bg-card); border-radius: var(--radius); padding: 24px; margin-top: 20px; border: 1px solid var(--border-soft); box-shadow: var(--shadow); display: none; }
+.results-panel.show { display: block; }
+.results-score { text-align: center; padding: 22px; background: var(--accent-soft); border-radius: var(--radius-sm); margin-bottom: 16px; }
+.results-score-num { font-size: 52px; font-weight: 700; color: var(--accent); line-height: 1; }
+.results-score-label { font-size: 14px; color: var(--text-soft); margin-top: 6px; }
+.progress-bar { height: 6px; background: var(--border-soft); border-radius: 3px; overflow: hidden; margin: 12px 0; }
+.progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+.result-item { padding: 14px 16px; border-radius: var(--radius-sm); margin-bottom: 8px; border: 1px solid var(--border); font-size: 14px; }
+.result-item.correct { background: var(--success-soft); border-color: #b7ebc9; }
+.result-item.wrong { background: var(--error-soft); border-color: #f5c6c2; }
+.result-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
+.result-item-num { font-weight: 600; color: var(--text); }
+.result-item-status { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+.result-item-status.correct { background: var(--success); color: white; }
+.result-item-status.wrong { background: var(--error); color: white; }
+.result-item-answers { font-size: 13px; color: var(--text-soft); }
+.result-item-answers strong { color: var(--text); }
+.result-item-solution { margin-top: 10px; font-size: 13px; color: var(--text-soft); line-height: 1.7; }
+.result-item-solution p { margin-bottom: 8px; }
+.result-item-solution .formula { font-weight: 700; color: var(--text); font-family: "Consolas", "Monaco", monospace; background: var(--bg-card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+.footer { text-align: center; padding: 20px; font-size: 13px; color: var(--text-muted); margin-top: 20px; }
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.section-desc { font-size: 14px; color: var(--text-muted); }
+@media (max-width: 640px) {
+  .header-title { font-size: 24px; }
+  .ops-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1 class="header-title">Задание 3. Значение логического выражения</h1>
+    <p class="header-sub">Подготовка к ОГЭ по информатике · 9 класс</p>
+    <div class="header-meta">
+      <span>👨‍🏫 Учитель: Масликов М.М.</span>
+      <span>⏱ Время: 2 урока (80 мин)</span>
+      <span>📚 20 заданий</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="theory" role="tab" aria-selected="true">📖 Теория</button>
+    <button class="tab" data-tab="practice1" role="tab" aria-selected="false">⚡ Практика 1</button>
+    <button class="tab" data-tab="practice2" role="tab" aria-selected="false">📝 Практика 2</button>
+  </nav>
+
+  <main id="app"></main>
+
+  <footer class="footer">
+    <p>Практические задания оформлены по материалам <a href="https://inf-oge.sdamgia.ru" target="_blank" rel="noopener">Решу ОГЭ (Сдам ГИА)</a></p>
+    <p style="margin-top:6px;">© 2026 · Учебный материал для подготовки к ОГЭ</p>
+  </footer>
+</div>
+
+<script>
+const TASKS = [
+  {
+    id: 1, num: 10632,
+    text: 'Напишите наименьшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X < 2) И (X < 5)',
+    answer: '2',
+    solution: 'Запишем выражение в виде <span class="formula">(X >= 2) И (X < 5)</span>.\n\nЗначит, наименьшее число, для которого высказывание будет истинным — 2.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(1, 100):\n    if not(x < 2) and (x < 5):\n        print(x)\n        break\n\nОтвет: 2.'
+  },
+  {
+    id: 2, num: 10645,
+    text: 'Напишите наибольшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X нечетное) И НЕ (X >= 10)',
+    answer: '8',
+    solution: 'Запишем выражение в виде <span class="formula">(X четное) И (X < 10)</span>.\n\nЗначит, наибольшее число, для которого высказывание будет истинным — 8.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(100, 0, -1):\n    if not(x % 2 != 0) and not(x >= 10):\n        print(x)\n        break\n\nОтвет: 8.'
+  },
+  {
+    id: 3, num: 10877,
+    text: 'Напишите наименьшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X <= 8) И НЕ (X >= 15) И (X четное)',
+    answer: '10',
+    solution: 'Запишем выражение в виде <span class="formula">(X > 8) И (X < 15) И (X четное)</span>.\n\nЗначит, наименьшее число, для которого высказывание будет истинным — 10.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(1, 100):\n    if not(x <= 8) and not(x >= 15) and x % 2 == 0:\n        print(x)\n        break\n\nОтвет: 10.'
+  },
+  {
+    id: 4, num: 42050,
+    text: 'Определите количество натуральных двузначных чисел x, для которых истинно логическое выражение:',
+    expr: 'НЕ (x четное) И НЕ (x кратно 5)',
+    answer: '36',
+    solution: 'Логическое «И» ложно во всех случаях, кроме случая, когда истины оба высказывания. Запишем выражение в виде <span class="formula">(x нечетное) И (x не кратно 5)</span>.\n\nДвузначные числа лежат в диапазоне от 10 до 99, то есть их количество равно 90. Половина этих чисел нечетная, то есть рассматриваем 45 чисел. Выпишем нечетные числа, кратные 5: 15, 25, 35, 45, 55, 65, 75, 85, 95. Их количество равно 9.\n\nЗначит, количество натуральных двузначных чисел x, при которых логическое выражение будет истинным, равно 45 − 9 = 36.\n\nОтвет: 36.'
+  },
+  {
+    id: 5, num: 37328,
+    text: 'Напишите наименьшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X > 5) И (X > 4)',
+    answer: '5',
+    solution: 'Запишем выражение в виде <span class="formula">(X <= 5) И (X > 4)</span>.\n\nЗначит, наименьшее число, для которого высказывание будет истинным — 5.\n\nОтвет: 5.'
+  },
+  {
+    id: 6, num: 35575,
+    text: 'Напишите количество натуральных чисел, для которых истинно высказывание:',
+    expr: 'НЕ (Число > 15) И НЕ (Число четное)',
+    answer: '8',
+    solution: 'Логическое «И» истинно только тогда, когда истинны оба высказывания. Запишем выражение в виде <span class="formula">(X <= 15) И (Число нечетное)</span>.\n\nВыпишем подходящие натуральные числа: 1, 3, 5, 7, 9, 11, 13 и 15. Их количество равно 8.\n\nОтвет: 8.'
+  },
+  {
+    id: 7, num: 10869,
+    text: 'Напишите наибольшее целое число x, для которого истинно высказывание:',
+    expr: '(X > 5) И НЕ (X > 15)',
+    answer: '15',
+    solution: 'Логическое «И» ложно тогда, когда ложно одно из высказываний. Запишем выражение в виде <span class="formula">(X > 5) И (X <= 15)</span>.\n\nЗначит, наибольшее число, для которого высказывание будет истинным — 15.\n\nПримечание: логическое «НЕ» меняет знак сравнения на противоположный. Например, высказывание НЕ(а < b) соответствует высказыванию а >= b.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(100, 0, -1):\n    if (x > 5) and not(x > 15):\n        print(x)\n        break\n\nОтвет: 15.'
+  },
+  {
+    id: 8, num: 10633,
+    text: 'Напишите наименьшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X < 2) И (X четное)',
+    answer: '2',
+    solution: 'Запишем выражение в виде <span class="formula">(X >= 2) И (X четное)</span>.\n\nЗначит, наименьшее число, для которого высказывание будет истинным — 2.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(1, 100):\n    if not(x < 2) and (x % 2 == 0):\n        print(x)\n        break\n\nОтвет: 2.'
+  },
+  {
+    id: 9, num: 10876,
+    text: 'Напишите наибольшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X <= 11) И НЕ (X >= 17) И (X нечетное)',
+    answer: '15',
+    solution: 'Запишем выражение в виде <span class="formula">(X > 11) И (X < 17) И (X нечетное)</span>.\n\nЗначит, наибольшее число, для которого высказывание будет истинным — 15. А наименьшее число, для которого высказывание будет истинным — 13.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(100, 0, -1):\n    if not(x <= 11) and not(x >= 17) and x % 2 != 0:\n        print(x)\n        break\n\nОтвет: 15.'
+  },
+  {
+    id: 10, num: 37271,
+    text: 'Определите количество натуральных чисел x, для которых истинно логическое выражение:',
+    expr: 'НЕ ((x ≥ 33) ИЛИ (x < 19)) И (x четное)',
+    answer: '7',
+    solution: 'Запишем выражение в виде <span class="formula">(x < 33) И (x ≥ 19) И (x четное)</span>.\n\nПодходят числа: 20, 22, 24, 26, 28, 30, 32.\n\nЗначит, количество натуральных чисел, для которых высказывание будет истинным — 7.\n\nОтвет: 7.'
+  },
+  {
+    id: 11, num: 37480,
+    text: 'Определите количество натуральных двузначных чисел, для которых истинно логическое выражение:',
+    expr: 'НЕ (x нечетное) И НЕ (x > 51)',
+    answer: '21',
+    solution: 'Запишем выражение в виде <span class="formula">(x четное) И (x <= 51)</span>.\n\nКоличество двузначных натуральных чисел, не превосходящих число 51, равно 42. Из этих 42 чисел половина является четной.\n\nСледовательно, количество натуральных чисел, для которых высказывание будет истинным — 21.\n\nОтвет: 21.'
+  },
+  {
+    id: 12, num: 43704,
+    text: 'Напишите наибольшее натуральное число x, для которого ЛОЖНО высказывание:',
+    expr: 'НЕ (x < 6) ИЛИ ((x < 5) И (x ≥ 4))',
+    answer: '5',
+    solution: 'Логическое «ИЛИ» ложно только тогда, когда ложны оба высказывания. Первое высказывание <span class="formula">НЕ (x < 6)</span> ложно при x < 6. Второе высказывание <span class="formula">(x < 5) И (x ≥ 4)</span> ложно при x < 4 или x ≥ 5, то есть истинно только при x = 4.\n\nЗначит, высказывание истинно при x ≥ 6 или x = 4, а ложно — при x = 1, 2, 3, 5.\n\nНаибольшее число, для которого высказывание будет ложным — 5.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(100, 0, -1):\n    if not(not(x < 6) or ((x < 5) and (x >= 4))):\n        print(x)\n        break\n\nОтвет: 5.'
+  },
+  {
+    id: 13, num: 10871,
+    text: 'Напишите наименьшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X < 2) И НЕ (X > 10)',
+    answer: '2',
+    solution: 'Запишем выражение в виде <span class="formula">(X >= 2) И (X <= 10)</span>.\n\nЗначит, наименьшее число, для которого высказывание будет истинным — 2.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(1, 100):\n    if not(x < 2) and not(x > 10):\n        print(x)\n        break\n\nОтвет: 2.'
+  },
+  {
+    id: 14, num: 43684,
+    text: 'Напишите наибольшее натуральное число x, для которого ИСТИННО высказывание:',
+    expr: 'НЕ (x < 5) И (x < 6)',
+    answer: '5',
+    solution: 'Логическое «И» ложно тогда, когда ложно одно из высказываний. Запишем выражение в виде <span class="formula">(x >= 5) И (x < 6)</span>.\n\nЗначит, наибольшее число, для которого высказывание будет истинным — 5.\n\nПримечание: логическое «НЕ» меняет знак сравнения на противоположный. Например, высказывание НЕ(а < b) соответствует высказыванию а >= b.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(100, 0, -1):\n    if not(x < 5) and x < 6:\n        print(x)\n        break\n\nОтвет: 5.'
+  },
+  {
+    id: 15, num: 10634,
+    text: 'Напишите наименьшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X < 7) И (X четное)',
+    answer: '8',
+    solution: 'Запишем выражение в виде <span class="formula">(X >= 7) И (X четное)</span>.\n\nЗначит, наименьшее число, для которого высказывание будет истинным — 8.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(1, 100):\n    if not(x < 7) and (x % 2 == 0):\n        print(x)\n        break\n\nОтвет: 8.'
+  },
+  {
+    id: 16, num: 37190,
+    text: 'Определите количество натуральных двузначных чисел x, для которых ЛОЖНО логическое высказывание:',
+    expr: 'НЕ (x четное) И НЕ (x кратно 13)',
+    answer: '49',
+    solution: 'Логическое «И» ложно во всех случаях, кроме случая, когда истины оба высказывания. Запишем выражение в виде <span class="formula">(x нечетное) И (x не кратно 13)</span>.\n\nДвузначные числа лежат в диапазоне от 10 до 99, то есть их количество равно 90. Половина этих чисел нечетная, то есть рассматриваем 45 чисел. Выпишем нечетные числа, кратные 13: 13, 39, 65, 91. Их количество равно 4.\n\nЗначит, количество натуральных двузначных чисел x, при которых логическое выражение будет истинным, равно 45 − 4 = 41.\n\nСледовательно, количество чисел, для которых высказывание будет ложным, равно 90 − 41 = 49.\n\nПриведем решение Михаила Глинского на языке Python:\n\nPY:k = 0\nfor x in range(10, 100):\n    if not(x % 2 == 1 and x % 13 != 0):\n        k += 1\nprint(k)\n\nОтвет: 49.'
+  },
+  {
+    id: 17, num: 10641,
+    text: 'Напишите наибольшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X <= 6) И НЕ (X >= 11)',
+    answer: '10',
+    solution: 'Запишем выражение в виде <span class="formula">(X > 6) И (X < 11)</span>.\n\nЗначит, наибольшее число, для которого высказывание будет истинным — 10.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(100, 0, -1):\n    if not(x <= 6) and not(x >= 11):\n        print(x)\n        break\n\nОтвет: 10.'
+  },
+  {
+    id: 18, num: 43652,
+    text: 'Дано четыре числа: 35, 4598, 54321, 24. Для какого из приведенных чисел истинно высказывание:',
+    expr: '(Число > 100) И НЕ (Число нечетное)',
+    answerNote: 'В ответе запишите это число.',
+    answer: '4598',
+    solution: 'Логическое «И» истинно только тогда, когда истинны оба высказывания. Запишем выражение в виде <span class="formula">(Число > 100) И (Число четное)</span>.\n\nЗаметим, что 35 и 24 — меньше 100, числа не подходят; 54321 — число нечетное, значит, не подходит.\n\nТогда число, для которого высказывание будет истинным — 4598.\n\nОтвет: 4598.'
+  },
+  {
+    id: 19, num: 10870,
+    text: 'Напишите наименьшее целое число x, для которого истинно высказывание:',
+    expr: '(X > 2) И НЕ (X > 13)',
+    answer: '3',
+    solution: 'Запишем выражение в виде <span class="formula">(X > 2) И (X <= 13)</span>.\n\nЗначит, наименьшее число, для которого высказывание будет истинным — 3.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(1, 100):\n    if (x > 2) and not(x > 13):\n        print(x)\n        break\n\nОтвет: 3.'
+  },
+  {
+    id: 20, num: 10875,
+    text: 'Напишите наибольшее целое число x, для которого истинно высказывание:',
+    expr: 'НЕ (X <= 11) И НЕ (X >= 17)',
+    answer: '16',
+    solution: 'Запишем выражение в виде <span class="formula">(X > 11) И (X < 17)</span>.\n\nЗначит, наибольшее число, для которого высказывание будет истинным — 16.\n\nПриведем другое решение на языке Python:\n\nPY:for x in range(100, 0, -1):\n    if not(x <= 11) and not(x >= 17):\n        print(x)\n        break\n\nОтвет: 16.'
+  }
+];
+
+const state = {
+  currentTab: 'theory',
+  answers1: {}, showSolution1: {},
+  answers2: {}, results2: null
+};
+
+function renderSolutionBlocks(container, solutionText) {
+  const parts = solutionText.split('\n\n');
+  parts.forEach(part => {
+    const trimmed = part.trim();
+    if (!trimmed) return;
+    if (trimmed.startsWith('PY:')) {
+      const code = document.createElement('div');
+      code.className = 'code-block';
+      code.textContent = trimmed.slice(3);
+      container.appendChild(code);
+    } else {
+      const p = document.createElement('p');
+      p.innerHTML = trimmed;
+      container.appendChild(p);
+    }
+  });
+}
+
+function renderTheory() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  const intro = document.createElement('section');
+  intro.className = 'card';
+  intro.innerHTML = `
+    <h2 class="card-title">Что такое логическое выражение?</h2>
+    <p><strong>Высказывание</strong> — это повествовательное предложение, о котором можно сказать, истинно оно или ложно. Например: «Москва — столица России» — истинное высказывание, а «2 + 2 = 5» — ложное.</p>
+    <p><strong>Логическое выражение</strong> — это высказывание, построенное из простых высказываний с помощью логических операций. В задании 3 ОГЭ нужно определить, при каких значениях числа выражение истинно или ложно, либо посчитать количество таких чисел.</p>
+    <div class="note">
+      <strong>Важно:</strong> в заданиях часто встречаются высказывания вида «X четное», «X кратно 13» — их нужно переводить на язык математики: <code>x % 2 == 0</code>, <code>x % 13 == 0</code>.
+    </div>
+  `;
+  app.appendChild(intro);
+
+  const ops = document.createElement('section');
+  ops.className = 'card';
+  ops.innerHTML = `
+    <h2 class="card-title">Логические операции</h2>
+    <div class="ops-grid">
+      <div class="op-card">
+        <div class="op-card-title">Отрицание</div>
+        <div class="op-symbol">НЕ</div>
+        <div class="op-name">Инверсия: меняет истину на ложь и наоборот</div>
+        <div class="op-python">Python: not</div>
+      </div>
+      <div class="op-card">
+        <div class="op-card-title">Конъюнкция</div>
+        <div class="op-symbol">И</div>
+        <div class="op-name">Истинно только тогда, когда истинны ОБА высказывания</div>
+        <div class="op-python">Python: and</div>
+      </div>
+      <div class="op-card">
+        <div class="op-card-title">Дизъюнкция</div>
+        <div class="op-symbol">ИЛИ</div>
+        <div class="op-name">Ложно только тогда, когда ложны ОБА высказывания</div>
+        <div class="op-python">Python: or</div>
+      </div>
+    </div>
+
+    <h3>Таблицы истинности</h3>
+    <table class="truth-table">
+      <tr><th>A</th><th>НЕ A</th></tr>
+      <tr><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td></tr>
+    </table>
+    <table class="truth-table">
+      <tr><th>A</th><th>B</th><th>A И B</th><th>A ИЛИ B</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+    </table>
+
+    <h3>Приоритет операций</h3>
+    <ol>
+      <li>Скобки</li>
+      <li>НЕ (отрицание)</li>
+      <li>И (конъюнкция)</li>
+      <li>ИЛИ (дизъюнкция)</li>
+    </ol>
+
+    <div class="note note-warn">
+      <strong>Ключевое свойство:</strong> логическое «НЕ» меняет знак сравнения на противоположный: НЕ(a &lt; b) = a >= b; НЕ(a >= b) = a &lt; b. Это позволяет быстро упрощать выражения.
+    </div>
+  `;
+  app.appendChild(ops);
+
+  const types = document.createElement('section');
+  types.className = 'card';
+  types.innerHTML = `
+    <h2 class="card-title">Типы заданий</h2>
+    <h3>📊 Тип А: Найти наибольшее / наименьшее число</h3>
+    <p>«Напишите наибольшее целое число x, для которого истинно высказывание...» После упрощения выражения получается диапазон значений, из которого берётся крайнее число.</p>
+    <h3>📊 Тип Б: Посчитать количество чисел</h3>
+    <p>«Определите количество натуральных двузначных чисел x, для которых истинно (ложно) выражение...» Нужно посчитать, сколько чисел из диапазона удовлетворяют условию.</p>
+    <h3>📊 Тип В: Выбрать число из списка</h3>
+    <p>«Дано четыре числа... Для какого из них истинно высказывание?» Проверяем каждое число по условию.</p>
+    <div class="note note-info">
+      <strong>Обратите внимание:</strong> иногда спрашивают, при каких числах выражение <strong>ЛОЖНО</strong>. Читайте условие внимательно!
+    </div>
+  `;
+  app.appendChild(types);
+
+  const algo = document.createElement('section');
+  algo.className = 'card';
+  algo.innerHTML = `
+    <h2 class="card-title">Алгоритм решения</h2>
+    <h3>Способ 1: Аналитический (упрощение)</h3>
+    <ol>
+      <li>Раскройте все «НЕ», поменяв знаки сравнения на противоположные</li>
+      <li>Получите систему условий, соединённых «И» (или «ИЛИ»)</li>
+      <li>Найдите диапазон значений и выберите нужное число (крайнее или подсчитайте количество)</li>
+    </ol>
+    <h3>Способ 2: Перебор на Python</h3>
+    <p>Для поиска наибольшего числа перебираем значения сверху вниз:</p>
+    <div class="code-block">for x in range(100, 0, -1):
+    if УСЛОВИЕ:
+        print(x)
+        break</div>
+    <p>Для поиска наименьшего числа перебираем снизу вверх:</p>
+    <div class="code-block">for x in range(1, 100):
+    if УСЛОВИЕ:
+        print(x)
+        break</div>
+    <p>Для подсчёта количества чисел используем счётчик:</p>
+    <div class="code-block">k = 0
+for x in range(10, 100):
+    if УСЛОВИЕ:
+        k += 1
+print(k)</div>
+    <div class="note">
+      <strong>Совет:</strong> четность проверяется как <code>x % 2 == 0</code>, кратность как <code>x % 13 == 0</code>. Не забывайте про оператор <code>break</code> при поиске крайнего значения.
+    </div>
+  `;
+  app.appendChild(algo);
+
+  const example1 = document.createElement('section');
+  example1.className = 'card';
+  example1.innerHTML = `
+    <h2 class="card-title">Разбор примера 1 (поиск наибольшего числа)</h2>
+    <p><strong>Задание №10868.</strong> Напишите наибольшее целое число x, для которого истинно высказывание:</p>
+    <div class="expr-box">(X >= 6) И НЕ (X > 12)</div>
+    <h3>Решение</h3>
+    <p>Логическое «И» ложно тогда, когда ложно одно из высказываний. Раскроем «НЕ»: высказывание НЕ(X > 12) истинно при X <= 12. Запишем выражение в виде:</p>
+    <div class="expr-box">(X >= 6) И (X <= 12)</div>
+    <p>Высказывание истинно при всех x от 6 до 12 включительно. Значит, наибольшее число, для которого высказывание будет истинным — 12.</p>
+    <p>Проверим перебором на языке Python:</p>
+    <div class="code-block">for x in range(100, 0, -1):
+    if (x >= 6) and not(x > 12):
+        print(x)
+        break</div>
+    <p>Программа выведет 12.</p>
+    <div class="note note-success"><strong>Ответ: 12</strong></div>
+  `;
+  app.appendChild(example1);
+
+  const example2 = document.createElement('section');
+  example2.className = 'card';
+  example2.innerHTML = `
+    <h2 class="card-title">Разбор примера 2 (подсчёт количества чисел)</h2>
+    <p><strong>Задание №42023.</strong> Определите количество натуральных двузначных чисел x, для которых ложно логическое выражение:</p>
+    <div class="expr-box">НЕ (x четное) И НЕ (x кратно 13)</div>
+    <h3>Решение</h3>
+    <p>Логическое «И» ложно во всех случаях, кроме случая, когда истины оба высказывания. Запишем выражение в виде:</p>
+    <div class="expr-box">(x нечетное) И (x не кратно 13)</div>
+    <p>Двузначные числа лежат в диапазоне от 10 до 99, то есть их количество равно 90. Половина этих чисел нечетная, то есть рассматриваем 45 чисел.</p>
+    <p>Выпишем нечетные числа, кратные 13: 13, 39, 65, 91. Их количество равно 4.</p>
+    <p>Значит, количество натуральных двузначных чисел x, при которых логическое выражение будет <strong>истинным</strong>, равно 45 − 4 = 41.</p>
+    <p>Следовательно, количество чисел, для которых высказывание будет <strong>ложным</strong>, равно 90 − 41 = 49.</p>
+    <div class="note note-success"><strong>Ответ: 49</strong></div>
+  `;
+  app.appendChild(example2);
+
+  const mistakes = document.createElement('section');
+  mistakes.className = 'card';
+  mistakes.innerHTML = `
+    <h2 class="card-title">Типичные ошибки</h2>
+    <ul>
+      <li>❌ Неправильно раскрывать «НЕ»: забывать менять знак сравнения на противоположный (НЕ(X > 5) — это X <= 5, а не X < 5)</li>
+      <li>❌ Путать «истинно» и «ложно» в условии задачи</li>
+      <li>❌ Забывать, что двузначные числа — это диапазон от 10 до 99 (всего 90 чисел)</li>
+      <li>❌ Путать «четное» и «нечетное» при переводе высказывания на язык математики</li>
+      <li>❌ Искать наибольшее число перебором снизу вверх (нужно сверху вниз, и наоборот)</li>
+    </ul>
+    <div class="note">
+      <strong>Совет:</strong> после решения проверьте ответ подстановкой: подставьте найденное число в исходное выражение и убедитесь, что оно даёт нужное значение истинности.
+    </div>
+  `;
+  app.appendChild(mistakes);
+}
+
+function createTaskElement(task, num, mode) {
+  const taskEl = document.createElement('article');
+  taskEl.className = 'task';
+  taskEl.dataset.taskId = task.id;
+
+  const header = document.createElement('div');
+  header.className = 'task-header';
+  const numEl = document.createElement('span');
+  numEl.className = 'task-num';
+  numEl.textContent = 'Задание ' + num + ' №' + task.num;
+  header.appendChild(numEl);
+  const linkEl = document.createElement('a');
+  linkEl.className = 'task-link';
+  linkEl.href = 'https://inf-oge.sdamgia.ru/problem?id=' + task.num;
+  linkEl.target = '_blank';
+  linkEl.rel = 'noopener';
+  linkEl.textContent = 'Оригинал ↗';
+  header.appendChild(linkEl);
+  taskEl.appendChild(header);
+
+  const textEl = document.createElement('p');
+  textEl.className = 'task-text';
+  textEl.textContent = task.text;
+  taskEl.appendChild(textEl);
+
+  const exprEl = document.createElement('div');
+  exprEl.className = 'expr-box';
+  exprEl.textContent = task.expr;
+  taskEl.appendChild(exprEl);
+
+  if (task.answerNote) {
+    const noteEl = document.createElement('p');
+    noteEl.className = 'task-text';
+    noteEl.textContent = task.answerNote;
+    taskEl.appendChild(noteEl);
+  }
+
+  const inputGroup = document.createElement('div');
+  inputGroup.className = 'input-group';
+  const label = document.createElement('label');
+  label.className = 'input-label';
+  label.htmlFor = 'input-' + mode + '-' + task.id;
+  label.textContent = 'Ваш ответ:';
+  inputGroup.appendChild(label);
+  const input = document.createElement('input');
+  input.className = 'input';
+  input.id = 'input-' + mode + '-' + task.id;
+  input.type = 'text';
+  input.autocomplete = 'off';
+  input.placeholder = 'Введите число';
+  input.addEventListener('input', (e) => {
+    updateAnswer(mode, task.id, e.target.value);
+  });
+  inputGroup.appendChild(input);
+  taskEl.appendChild(inputGroup);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+  if (mode === 'practice1') {
+    const checkBtn = document.createElement('button');
+    checkBtn.className = 'btn btn-primary';
+    checkBtn.textContent = 'Проверить';
+    checkBtn.addEventListener('click', () => checkTask1(task.id));
+    btnRow.appendChild(checkBtn);
+    const solBtn = document.createElement('button');
+    solBtn.className = 'btn btn-secondary';
+    solBtn.textContent = 'Показать решение';
+    solBtn.addEventListener('click', () => toggleSolution1(task.id));
+    btnRow.appendChild(solBtn);
+  }
+  taskEl.appendChild(btnRow);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback';
+  feedback.id = 'feedback-' + task.id;
+  taskEl.appendChild(feedback);
+
+  const solution = document.createElement('div');
+  solution.className = 'solution';
+  solution.id = 'solution-' + task.id;
+  const solTitle = document.createElement('div');
+  solTitle.className = 'solution-title';
+  solTitle.textContent = 'Решение:';
+  solution.appendChild(solTitle);
+  renderSolutionBlocks(solution, task.solution);
+  const solAnswer = document.createElement('p');
+  solAnswer.style.marginTop = '10px';
+  solAnswer.style.fontWeight = '600';
+  solAnswer.style.color = 'var(--text)';
+  solAnswer.textContent = 'Ответ: ' + task.answer;
+  solution.appendChild(solAnswer);
+  taskEl.appendChild(solution);
+
+  return taskEl;
+}
+
+function renderPractice1() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">⚡ Практика 1</h2>
+      <p class="section-desc">10 заданий. После каждого можно сразу проверить ответ и посмотреть решение.</p>
+    </div>
+  `;
+  app.appendChild(head);
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice1-tasks';
+  app.appendChild(tasksBlock);
+  TASKS.slice(0, 10).forEach((task, idx) => {
+    tasksBlock.appendChild(createTaskElement(task, idx + 1, 'practice1'));
+  });
+}
+
+function renderPractice2() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">📝 Практика 2</h2>
+      <p class="section-desc">10 заданий. Ответы вводите сразу, но проверка — одной кнопкой в конце.</p>
+    </div>
+  `;
+  app.appendChild(head);
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice2-tasks';
+  app.appendChild(tasksBlock);
+  TASKS.slice(10, 20).forEach((task, idx) => {
+    tasksBlock.appendChild(createTaskElement(task, idx + 1, 'practice2'));
+  });
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn btn-primary btn-block';
+  checkBtn.textContent = '✓ Проверить все ответы';
+  checkBtn.style.marginTop = '8px';
+  checkBtn.addEventListener('click', checkAllPractice2);
+  app.appendChild(checkBtn);
+  const resultsPanel = document.createElement('div');
+  resultsPanel.className = 'results-panel';
+  resultsPanel.id = 'results-panel-2';
+  app.appendChild(resultsPanel);
+}
+
+function updateAnswer(mode, taskId, value) {
+  if (mode === 'practice1') {
+    state.answers1[taskId] = value;
+    state.showSolution1[taskId] = false;
+    const input = document.getElementById('input-practice1-' + taskId);
+    const fb = document.getElementById('feedback-' + taskId);
+    const sol = document.getElementById('solution-' + taskId);
+    if (input) input.classList.remove('correct', 'wrong');
+    if (fb) fb.classList.remove('show');
+    if (sol) sol.classList.remove('show');
+  } else {
+    state.answers2[taskId] = value;
+  }
+}
+
+function checkTask1(taskId) {
+  const task = TASKS.find(t => t.id === taskId);
+  if (!task) return;
+  const input = document.getElementById('input-practice1-' + taskId);
+  const feedback = document.getElementById('feedback-' + taskId);
+  if (!input || !feedback) return;
+  const userAnswer = (state.answers1[taskId] || '').trim();
+  if (!userAnswer) {
+    feedback.className = 'feedback show error';
+    feedback.textContent = 'Введите ответ перед проверкой.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+    return;
+  }
+  if (userAnswer === task.answer) {
+    feedback.className = 'feedback show success';
+    feedback.textContent = '✓ Верно! Отличная работа.';
+    input.classList.remove('wrong');
+    input.classList.add('correct');
+  } else {
+    feedback.className = 'feedback show error';
+    feedback.textContent = '✗ Неверно. Правильный ответ: ' + task.answer + '. Посмотрите решение.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+  }
+}
+
+function toggleSolution1(taskId) {
+  state.showSolution1[taskId] = !state.showSolution1[taskId];
+  const sol = document.getElementById('solution-' + taskId);
+  if (sol) sol.classList.toggle('show', state.showSolution1[taskId]);
+}
+
+function checkAllPractice2() {
+  const results = [];
+  let correct = 0;
+  TASKS.slice(10, 20).forEach((task, idx) => {
+    const userAnswer = (state.answers2[task.id] || '').trim();
+    const isCorrect = userAnswer === task.answer;
+    if (isCorrect) correct++;
+    results.push({ num: idx + 1, task, userAnswer: userAnswer || '—', isCorrect });
+  });
+  state.results2 = results;
+  renderResults2(results, correct);
+}
+
+function renderResults2(results, correct) {
+  const panel = document.getElementById('results-panel-2');
+  if (!panel) return;
+  panel.innerHTML = '';
+  panel.classList.add('show');
+  const score = document.createElement('div');
+  score.className = 'results-score';
+  score.innerHTML = `
+    <div class="results-score-num">${correct} / 10</div>
+    <div class="results-score-label">правильных ответов</div>
+  `;
+  panel.appendChild(score);
+  const progress = document.createElement('div');
+  progress.className = 'progress-bar';
+  const fill = document.createElement('div');
+  fill.className = 'progress-fill';
+  fill.style.width = (correct * 10) + '%';
+  progress.appendChild(fill);
+  panel.appendChild(progress);
+  results.forEach(r => {
+    const item = document.createElement('div');
+    item.className = 'result-item ' + (r.isCorrect ? 'correct' : 'wrong');
+    const head = document.createElement('div');
+    head.className = 'result-item-head';
+    const numEl = document.createElement('span');
+    numEl.className = 'result-item-num';
+    numEl.textContent = 'Задание ' + r.num + ' №' + r.task.num;
+    head.appendChild(numEl);
+    const status = document.createElement('span');
+    status.className = 'result-item-status ' + (r.isCorrect ? 'correct' : 'wrong');
+    status.textContent = r.isCorrect ? 'Верно' : 'Неверно';
+    head.appendChild(status);
+    item.appendChild(head);
+    const answers = document.createElement('div');
+    answers.className = 'result-item-answers';
+    answers.innerHTML = '<strong>Ваш ответ:</strong> ' + escapeHtml(r.userAnswer) + ' · <strong>Правильный:</strong> ' + escapeHtml(r.task.answer);
+    item.appendChild(answers);
+    if (!r.isCorrect) {
+      const sol = document.createElement('div');
+      sol.className = 'result-item-solution';
+      renderSolutionBlocks(sol, r.task.solution);
+      item.appendChild(sol);
+    }
+    panel.appendChild(item);
+  });
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function switchTab(tabName) {
+  state.currentTab = tabName;
+  document.querySelectorAll('.tab').forEach(t => {
+    const isActive = t.dataset.tab === tabName;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  if (tabName === 'theory') renderTheory();
+  else if (tabName === 'practice1') renderPractice1();
+  else if (tabName === 'practice2') renderPractice2();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+  });
+  renderTheory();
+}
+
+init();
+</script>
+</body>
+</html>
