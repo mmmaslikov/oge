@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ Информатика 2027 — Главная страница</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f5f5f7;
+  --bg-card: #ffffff;
+  --text: #1d1d1f;
+  --text-soft: #515154;
+  --text-muted: #86868b;
+  --border: #d2d2d7;
+  --border-soft: #e8e8ed;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-soft: #e8f4fd;
+  --success: #34c759;
+  --success-soft: #eafaf1;
+  --error: #ff3b30;
+  --error-soft: #fff0ef;
+  --warning: #ff9500;
+  --warning-soft: #fff8eb;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg-soft);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body { padding: 16px; }
+.container { max-width: 1000px; margin: 0 auto; }
+
+.header {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-soft);
+}
+.header-title { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.header-sub { color: var(--text-soft); font-size: 15px; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; font-size: 13px; color: var(--text-muted); }
+.header-meta span { display: flex; align-items: center; gap: 6px; }
+
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 26px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-soft);
+}
+.card-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em; }
+h3 { font-size: 17px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+p { margin-bottom: 12px; color: var(--text-soft); }
+p:last-child { margin-bottom: 0; }
+ul, ol { margin: 10px 0 14px 24px; color: var(--text-soft); }
+li { margin-bottom: 6px; }
+strong { color: var(--text); font-weight: 600; }
+
+.note {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: var(--text);
+}
+.note-warn { background: var(--warning-soft); border-left-color: var(--warning); }
+.note-success { background: var(--success-soft); border-left-color: var(--success); }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0; }
+.stat { background: var(--bg-soft); border: 1px solid var(--border-soft); border-radius: var(--radius-sm); padding: 14px; text-align: center; }
+.stat-num { font-size: 24px; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+.part-title { font-size: 17px; font-weight: 700; margin: 22px 0 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.part-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+
+.task-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin: 14px 0 8px; }
+.task-card {
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--bg-card); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm); padding: 16px;
+  text-decoration: none; color: var(--text);
+  transition: all .18s ease; box-shadow: var(--shadow-sm);
+}
+.task-card:hover, .task-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+  outline: none;
+}
+.task-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.task-card-num {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  background: var(--accent-soft); color: var(--accent);
+  font-weight: 700; border-radius: 10px; font-size: 16px; flex-shrink: 0;
+}
+.badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; letter-spacing: .02em; white-space: nowrap; }
+.badge-b { background: #dcfce7; color: #166534; }
+.badge-p { background: #fef3c7; color: #92400e; }
+.badge-v { background: #fee2e2; color: #991b1b; }
+.task-card-title { font-size: 14px; font-weight: 600; line-height: 1.4; flex: 1; }
+.task-card-meta { display: flex; gap: 10px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; }
+.task-card-link { font-size: 13px; font-weight: 600; color: var(--accent); }
+
+.grade-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 14px 0; }
+.grade-block { border-radius: var(--radius-sm); padding: 16px; text-align: center; border: 1px solid var(--border-soft); }
+.grade-mark { font-size: 28px; font-weight: 800; }
+.grade-range { font-size: 13px; font-weight: 600; margin-top: 4px; }
+.grade-note { font-size: 11px; margin-top: 6px; opacity: .8; }
+.grade-2 { background: #fff1f0; color: #991b1b; }
+.grade-3 { background: #fff8eb; color: #92400e; }
+.grade-4 { background: #e8f4fd; color: #075985; }
+.grade-5 { background: #eafaf1; color: #166534; }
+
+.footer { text-align: center; padding: 20px; font-size: 13px; color: var(--text-muted); margin-top: 20px; }
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .header-title { font-size: 24px; }
+  .task-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="header">
+    <h1 class="header-title">ОГЭ Информатика — 2027</h1>
+    <p class="header-sub">Главная страница курса подготовки · 9 класс</p>
+    <div class="header-meta">
+      <span>👨‍🏫 Учитель: Масликов М.М.</span>
+      <span>⏱ Время экзамена: 2 ч 30 мин (150 мин)</span>
+      <span>📚 16 заданий · 🎯 21 балл</span>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2 class="card-title">Об экзамене</h2>
+    <p>Работа состоит из <strong>двух частей</strong>: 12 заданий с кратким ответом (часть 1) и 4 задания с развёрнутым ответом (часть 2), которые выполняются <strong>на компьютере</strong>. Ответы к заданиям 1–12 записываются в виде числа или последовательности символов без пробелов и разделителей.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">16</div>
+        <div class="stat-label">заданий в работе</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">21</div>
+        <div class="stat-label">максимальный первичный балл</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">150</div>
+        <div class="stat-label">минут на выполнение</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">10 / 3 / 3</div>
+        <div class="stat-label">базовый / повышенный / высокий уровень</div>
+      </div>
+    </div>
+    <div class="note">
+      <strong>Важно:</strong> задания 13–16 выполняются на компьютере, а их ответы сохраняются в отдельные файлы (презентация, текстовый документ, таблица или программа). Имена файлов указывает технический специалист на экзамене.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Каталог заданий</h2>
+    <p>Выберите задание, чтобы перейти на страницу с теорией, разборами и тренажёрами. На каждой карточке указаны уровень сложности (Б — базовый, П — повышенный, В — высокий), максимальный балл и рекомендуемое время выполнения.</p>
+
+    <div class="part-title">📝 Часть 1 · Краткий ответ (задания 1–12)</div>
+    <div class="part-desc">12 заданий по 1 баллу · суммарно около 45 минут</div>
+    <div class="task-grid">
+      <a class="task-card" href="task1/task1.html">
+        <div class="task-card-top"><span class="task-card-num">1</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Количественные параметры информационных объектов</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~3 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task2/task2.html">
+        <div class="task-card-top"><span class="task-card-num">2</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Кодирование и декодирование информации</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~4 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task3/task3.html">
+        <div class="task-card-top"><span class="task-card-num">3</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Значение логического выражения</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~3 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task4/task4.html">
+        <div class="task-card-top"><span class="task-card-num">4</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Формальные описания реальных объектов и процессов</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~3 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task5/task5.html">
+        <div class="task-card-top"><span class="task-card-num">5</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Простой линейный алгоритм для формального исполнителя</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~4 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task6/task6.html">
+        <div class="task-card-top"><span class="task-card-num">6</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Программа с условным оператором</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~4 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task7/task7.html">
+        <div class="task-card-top"><span class="task-card-num">7</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Информационно-коммуникационные технологии</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~3 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task8/task8.html">
+        <div class="task-card-top"><span class="task-card-num">8</span><span class="badge badge-p">Повышенный</span></div>
+        <div class="task-card-title">Запросы для поисковых систем с использованием логических выражений</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~3 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task9/task9.html">
+        <div class="task-card-top"><span class="task-card-num">9</span><span class="badge badge-p">Повышенный</span></div>
+        <div class="task-card-title">Анализирование информации, представленной в виде схем</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~4 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task10/task10.html">
+        <div class="task-card-top"><span class="task-card-num">10</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Сравнение чисел в различных системах счисления</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~3 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task11/task11.html">
+        <div class="task-card-top"><span class="task-card-num">11</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Использование поиска операционной системы и текстового редактора</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~6 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task12/task12.html">
+        <div class="task-card-top"><span class="task-card-num">12</span><span class="badge badge-b">Базовый</span></div>
+        <div class="task-card-title">Использование поисковых средств операционной системы</div>
+        <div class="task-card-meta"><span>🎯 1 балл</span><span>⏱ ~5 мин</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+    </div>
+
+    <div class="part-title">💻 Часть 2 · Развёрнутый ответ (задания 13–16)</div>
+    <div class="part-desc">4 задания на компьютере · 9 баллов · суммарно около 105 минут</div>
+    <div class="task-grid">
+      <a class="task-card" href="task13/task13.html">
+        <div class="task-card-top"><span class="task-card-num">13</span><span class="badge badge-p">Повышенный</span></div>
+        <div class="task-card-title">Создание презентации или форматирование текста</div>
+        <div class="task-card-meta"><span>🎯 2 балла</span><span>⏱ ~25 мин</span><span>💻 файл .odp / .odt</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task14/task14.html">
+        <div class="task-card-top"><span class="task-card-num">14</span><span class="badge badge-v">Высокий</span></div>
+        <div class="task-card-title">Обработка большого массива данных</div>
+        <div class="task-card-meta"><span>🎯 3 балла</span><span>⏱ ~30 мин</span><span>💻 файл .ods</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task15/task15.html">
+        <div class="task-card-top"><span class="task-card-num">15</span><span class="badge badge-v">Высокий</span></div>
+        <div class="task-card-title">Короткий алгоритм в различных средах исполнения</div>
+        <div class="task-card-meta"><span>🎯 2 балла</span><span>⏱ ~25 мин</span><span>💻 Робот / Кумир</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+      <a class="task-card" href="task16/task16.html">
+        <div class="task-card-top"><span class="task-card-num">16</span><span class="badge badge-v">Высокий</span></div>
+        <div class="task-card-title">Программирование</div>
+        <div class="task-card-meta"><span>🎯 2 балла</span><span>⏱ ~25 мин</span><span>💻 программа</span></div>
+        <div class="task-card-link">Перейти к заданию →</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Шкала перевода отметок</h2>
+    <p>Суммарный первичный балл за всю работу (максимум 21) переводится в отметку по пятибалльной шкале:</p>
+    <div class="grade-grid">
+      <div class="grade-block grade-2">
+        <div class="grade-mark">«2»</div>
+        <div class="grade-range">0–4 балла</div>
+        <div class="grade-note">ниже порога</div>
+      </div>
+      <div class="grade-block grade-3">
+        <div class="grade-mark">«3»</div>
+        <div class="grade-range">5–10 баллов</div>
+        <div class="grade-note">порог сдачи</div>
+      </div>
+      <div class="grade-block grade-4">
+        <div class="grade-mark">«4»</div>
+        <div class="grade-range">11–16 баллов</div>
+        <div class="grade-note">хороший результат</div>
+      </div>
+      <div class="grade-block grade-5">
+        <div class="grade-mark">«5»</div>
+        <div class="grade-range">17–21 балл</div>
+        <div class="grade-note">отличный результат</div>
+      </div>
+    </div>
+    <div class="note note-success">
+      <strong>Ориентир для «5»:</strong> уверенно решённая часть 1 (12 баллов) плюс хотя бы два задания части 2 (5–9 баллов). Уже 11 баллов дают «4», поэтому часть 1 нельзя «проседать».
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Советы по подготовке и таймингу</h2>
+    <ul>
+      <li><strong>Начинайте с базовых заданий части 1</strong> (1–7, 10–12): они дают 10 баллов и в сумме занимают около 40 минут по нормативу.</li>
+      <li><strong>Часть 2 — самая «дорогая» по времени</strong>: на неё уходит около 105 минут. Планируйте приступить к ней, когда часть 1 уже записана, и не забывайте сохранять файлы в требуемом формате.</li>
+      <li><strong>Задание 14 приносит 3 балла</strong> — больше, чем любое другое. Освойте формулы электронных таблиц (СУММ, СУММЕСЛИ, ВПР, МАКС) заранее: это окупится.</li>
+      <li><strong>Следите за форматом ответа:</strong> в кратких ответах не ставятся пробелы, запятые и единицы измерения; дробная часть отделяется запятой.</li>
+      <li><strong>Оставляйте 10–15 минут в конце</strong> на проверку ответов части 1 и проверку сохранённых файлов части 2.</li>
+    </ul>
+    <div class="note note-warn">
+      <strong>Помните:</strong> на экзамене можно пользоваться любыми установленными программами из числа знакомых вам: текстовый редактор, редактор презентаций, электронные таблицы, среда «Кумир» или язык программирования, изучаемый в школе.
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Материалы подготовлены по спецификации ФИПИ ОГЭ‑2026 и заданиям <a href="https://inf-oge.sdamgia.ru" target="_blank" rel="noopener">Решу ОГЭ (Сдам ГИА)</a></p>
+    <p style="margin-top:6px;">© 2026 · Учебный материал для подготовки к ОГЭ</p>
+  </footer>
+
+</div>
+</body>
+</html>
