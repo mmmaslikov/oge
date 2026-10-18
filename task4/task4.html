@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ Информатика — Задание 4. Формальные описания реальных объектов и процессов</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f5f5f7;
+  --bg-card: #ffffff;
+  --text: #1d1d1f;
+  --text-soft: #515154;
+  --text-muted: #86868b;
+  --border: #d2d2d7;
+  --border-soft: #e8e8ed;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-soft: #e8f4fd;
+  --success: #34c759;
+  --success-soft: #eafaf1;
+  --error: #ff3b30;
+  --error-soft: #fff0ef;
+  --warning: #ff9500;
+  --warning-soft: #fff8eb;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg-soft);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body { padding: 16px; }
+.container { max-width: 1000px; margin: 0 auto; }
+.header { background: var(--bg-card); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); }
+.header-title { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.header-sub { color: var(--text-soft); font-size: 15px; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; font-size: 13px; color: var(--text-muted); }
+.header-meta span { display: flex; align-items: center; gap: 6px; }
+.tabs { display: flex; gap: 8px; background: var(--bg-card); padding: 8px; border-radius: var(--radius); margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); overflow-x: auto; }
+.tab { flex: 1; min-width: 140px; padding: 12px 16px; border: none; background: transparent; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--text-soft); cursor: pointer; transition: all 0.2s; font-family: inherit; white-space: nowrap; }
+.tab:hover { background: var(--bg-soft); color: var(--text); }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tab.active { background: var(--accent); color: white; box-shadow: var(--shadow-sm); }
+.card { background: var(--bg-card); border-radius: var(--radius); padding: 26px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); }
+.card-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em; }
+h3 { font-size: 17px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+p { margin-bottom: 12px; color: var(--text-soft); }
+p:last-child { margin-bottom: 0; }
+ul, ol { margin: 10px 0 14px 24px; color: var(--text-soft); }
+li { margin-bottom: 6px; }
+strong { color: var(--text); font-weight: 600; }
+.note { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 10px; margin: 16px 0; font-size: 14px; color: var(--text); }
+.note-warn { background: var(--warning-soft); border-left-color: var(--warning); }
+.note-success { background: var(--success-soft); border-left-color: var(--success); }
+.note-info { background: #f0f9ff; border-left-color: #0ea5e9; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 20px; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.15s; min-height: 44px; min-width: 44px; text-decoration: none; }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--bg-soft); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border-soft); }
+.btn-block { width: 100%; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.task { background: var(--bg-card); border-radius: var(--radius); padding: 22px; margin-bottom: 16px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm); }
+.task-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+.task-num { font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 20px; }
+.task-link { font-size: 12px; color: var(--text-muted); text-decoration: none; padding: 4px 8px; border-radius: 6px; }
+.task-link:hover { color: var(--accent); background: var(--accent-soft); }
+.task-text { color: var(--text); font-size: 15px; margin-bottom: 14px; line-height: 1.65; }
+.graph-wrap { overflow-x: auto; margin: 14px 0; }
+.graph-table { border-collapse: collapse; font-size: 14px; background: var(--bg-card); border: 2px solid var(--border); margin: 0 auto; }
+.graph-table th, .graph-table td { border: 1px solid var(--border); padding: 8px 14px; text-align: center; min-width: 44px; font-weight: 500; }
+.graph-table th { background: var(--bg-soft); font-weight: 700; color: var(--text); }
+.graph-table td { color: var(--text); }
+.graph-table td.empty { background: #fafafa; }
+.input-group { margin-top: 14px; }
+.input-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-soft); margin-bottom: 6px; }
+.input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--bg-card); color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; min-height: 44px; }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.input.correct { border-color: var(--success); background: var(--success-soft); }
+.input.wrong { border-color: var(--error); background: var(--error-soft); }
+.feedback { margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 14px; display: none; }
+.feedback.show { display: block; }
+.feedback.success { background: var(--success-soft); color: #1b7a3d; border: 1px solid #b7ebc9; }
+.feedback.error { background: var(--error-soft); color: #c41e14; border: 1px solid #f5c6c2; }
+.solution { margin-top: 12px; padding: 16px 18px; background: var(--bg-soft); border-radius: var(--radius-sm); border-left: 3px solid var(--accent); font-size: 14px; line-height: 1.7; display: none; }
+.solution.show { display: block; }
+.solution-title { font-weight: 600; margin-bottom: 8px; color: var(--text); }
+.solution p { margin-bottom: 10px; }
+.solution p:last-child { margin-bottom: 0; }
+.solution .formula { font-weight: 700; color: var(--text); font-family: "Consolas", "Monaco", monospace; background: var(--bg-card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+.results-panel { background: var(--bg-card); border-radius: var(--radius); padding: 24px; margin-top: 20px; border: 1px solid var(--border-soft); box-shadow: var(--shadow); display: none; }
+.results-panel.show { display: block; }
+.results-score { text-align: center; padding: 22px; background: var(--accent-soft); border-radius: var(--radius-sm); margin-bottom: 16px; }
+.results-score-num { font-size: 52px; font-weight: 700; color: var(--accent); line-height: 1; }
+.results-score-label { font-size: 14px; color: var(--text-soft); margin-top: 6px; }
+.progress-bar { height: 6px; background: var(--border-soft); border-radius: 3px; overflow: hidden; margin: 12px 0; }
+.progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+.result-item { padding: 14px 16px; border-radius: var(--radius-sm); margin-bottom: 8px; border: 1px solid var(--border); font-size: 14px; }
+.result-item.correct { background: var(--success-soft); border-color: #b7ebc9; }
+.result-item.wrong { background: var(--error-soft); border-color: #f5c6c2; }
+.result-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
+.result-item-num { font-weight: 600; color: var(--text); }
+.result-item-status { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+.result-item-status.correct { background: var(--success); color: white; }
+.result-item-status.wrong { background: var(--error); color: white; }
+.result-item-answers { font-size: 13px; color: var(--text-soft); }
+.result-item-answers strong { color: var(--text); }
+.result-item-solution { margin-top: 10px; font-size: 13px; color: var(--text-soft); line-height: 1.7; }
+.result-item-solution p { margin-bottom: 8px; }
+.result-item-solution .formula { font-weight: 700; color: var(--text); font-family: "Consolas", "Monaco", monospace; background: var(--bg-card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+.footer { text-align: center; padding: 20px; font-size: 13px; color: var(--text-muted); margin-top: 20px; }
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.section-desc { font-size: 14px; color: var(--text-muted); }
+.example-img { max-width: 100%; height: auto; border-radius: var(--radius-sm); border: 1px solid var(--border-soft); margin: 10px 0; }
+@media (max-width: 640px) {
+  .header-title { font-size: 24px; }
+  .graph-table th, .graph-table td { padding: 6px 8px; min-width: 34px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1 class="header-title">Задание 4. Формальные описания реальных объектов и процессов</h1>
+    <p class="header-sub">Подготовка к ОГЭ по информатике · 9 класс</p>
+    <div class="header-meta">
+      <span>👨‍🏫 Учитель: Масликов М.М.</span>
+      <span>⏱ Время: 2 урока (80 мин)</span>
+      <span>📚 20 заданий</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="theory" role="tab" aria-selected="true">📖 Теория</button>
+    <button class="tab" data-tab="practice1" role="tab" aria-selected="false">⚡ Практика 1</button>
+    <button class="tab" data-tab="practice2" role="tab" aria-selected="false">📝 Практика 2</button>
+  </nav>
+
+  <main id="app"></main>
+
+  <footer class="footer">
+    <p>Практические задания оформлены по материалам <a href="https://inf-oge.sdamgia.ru" target="_blank" rel="noopener">Решу ОГЭ (Сдам ГИА)</a></p>
+    <p style="margin-top:6px;">© 2026 · Учебный материал для подготовки к ОГЭ</p>
+  </footer>
+</div>
+
+<script>
+const TASKS = [
+  {
+    id: 1, num: 624,
+    text: 'Учитель Иван Петрович живет на станции Антоновка, а работает на станции Дружба. Чтобы успеть с утра на уроки, он должен ехать по самой короткой дороге. Проанализируйте таблицу и укажите длину кратчайшего пути от станции Антоновка до станции Дружба.',
+    graph: {
+      nodes: ['Антоновка', 'Васильки', 'Сельская', 'Дружба', 'Ежевичная'],
+      matrix: [
+        [null, 1, null, null, 1],
+        [1, null, null, 5, null],
+        [null, null, null, 1, 2],
+        [null, 5, 1, null, 7],
+        [1, null, 2, 7, null]
+      ]
+    },
+    answer: '4',
+    solution: 'Найдём все варианты маршрутов из Антоновки в Дружбу и выберем самый короткий.\n\nИз пункта Антоновка (А) можно попасть в пункты Васильки (В) и Ежевичная (Е). Из пункта В можно попасть в пункт Дружба (Д). Из пункта Сельская (С) можно попасть в пункты Д и Е. Из пункта Д можно попасть в пункт Е.\n\nА—В—Д: длина маршрута 6 км.\nА—Е—Д: длина маршрута 8 км.\nА—Е—С—Д: длина маршрута 4 км.\n\nСамый короткий путь: А—Е—С—Д. Длина маршрута 4 км.\n\nОтвет: 4.'
+  },
+  {
+    id: 2, num: 43637,
+    text: 'Между населёнными пунктами A, B, C, D, E, F построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E', 'F'],
+      matrix: [
+        [null, 1, 5, null, null, 15],
+        [1, null, 2, null, null, null],
+        [5, 2, null, 1, null, null],
+        [null, null, 1, null, 2, 6],
+        [null, null, null, 2, null, 1],
+        [15, null, null, 6, 1, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами А и F, проходящего через пункт Е. Передвигаться можно только по дорогам, указанным в таблице. Каждый пункт можно посетить только один раз.',
+    answer: '7',
+    solution: 'Найдём все варианты маршрутов из A в F, проходящих через E, и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, C, F. Из пункта B можно попасть в пункт C. Из пункта C можно попасть в пункт D. Из пункта D можно попасть в пункт E. Из пункта E можно попасть в пункт F.\n\nA—B—C—D—E—F: длина маршрута 7 км.\nA—C—D—E—F: длина маршрута 9 км.\n\nСамый короткий путь: A—B—C—D—E—F. Длина маршрута 7 км.\n\nОтвет: 7.'
+  },
+  {
+    id: 3, num: 163,
+    text: 'Между населёнными пунктами А, В, С, D, Е построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 2, null, 1, null],
+        [2, null, 3, 3, null],
+        [null, 3, null, 3, 2],
+        [1, 3, 3, null, null],
+        [null, null, 2, null, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами А и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.',
+    answer: '6',
+    solution: 'Найдём все варианты маршрутов из A в E и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, D. Из пункта B можно попасть в пункты C, D. Из пункта C можно попасть в пункты D, E.\n\nA—B—C—E: длина маршрута 7 км.\nA—D—B—C—E: длина маршрута 9 км.\nA—D—C—E: длина маршрута 6 км.\n\nСамый короткий путь: A—D—C—E. Длина маршрута 6 км.\n\nПримечание: заметим, что из пункта D прямого сообщения нет только с пунктом E.\n\nОтвет: 6.'
+  },
+  {
+    id: 4, num: 37329,
+    text: 'Между населёнными пунктами A, B, C, D, E, F построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E', 'F'],
+      matrix: [
+        [null, 2, 5, null, null, 15],
+        [2, null, 1, null, null, null],
+        [5, 1, null, 1, 3, null],
+        [null, null, 1, null, null, 6],
+        [null, null, 3, null, null, 3],
+        [15, null, null, 6, 3, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и F. Передвигаться можно только по дорогам, протяжённость которых указана в таблице. Каждый пункт можно посетить только один раз.',
+    answer: '9',
+    solution: 'Найдём все варианты маршрутов из A в F и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, C, F. Из пункта B можно попасть в пункт C. Из пункта C можно попасть в пункты D, E. Из пункта D можно попасть в пункт F. Из пункта E можно попасть в пункт F.\n\nA—B—C—D—F: длина маршрута 10 км.\nA—B—C—E—F: длина маршрута 9 км.\nA—C—E—F: длина маршрута 11 км.\n\nСамый короткий путь: A—B—C—E—F. Длина маршрута 9 км.\n\nОтвет: 9.'
+  },
+  {
+    id: 5, num: 43351,
+    text: 'Между населёнными пунктами A, B, C, D, E построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 1, 4, 3, 7],
+        [1, null, 2, 5, null],
+        [4, 2, null, 3, null],
+        [3, 5, 3, null, 2],
+        [7, null, null, 2, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и E, проходящего через пункт C. Передвигаться можно только по дорогам, протяжённость которых указана в таблице. Каждый пункт можно посетить только один раз.',
+    answer: '8',
+    solution: 'Найдём все варианты маршрутов из A в E, проходящих через C, и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, C, D, E. Из пункта B можно попасть в пункты C, D. Из пункта C можно попасть в пункт D. Из пункта D можно попасть в пункт E.\n\nA—B—C—D—E: длина маршрута 8 км.\nA—C—D—E: длина маршрута 9 км.\n\nСамый короткий путь: A—B—C—D—E. Длина маршрута 8 км.\n\nОтвет: 8.'
+  },
+  {
+    id: 6, num: 4564,
+    text: 'Между населёнными пунктами A, B, C, D, E, F построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E', 'F'],
+      matrix: [
+        [null, 1, 5, null, null, 15],
+        [1, null, 2, null, null, null],
+        [5, 2, null, 1, null, null],
+        [null, null, 1, null, 2, 6],
+        [null, null, null, 2, null, 1],
+        [15, null, null, 6, 1, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и F. Передвигаться можно только по дорогам, указанным в таблице.',
+    answer: '7',
+    solution: 'Найдём все варианты маршрутов из A в F и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, C и F. Из пункта B можно попасть в пункт C. Из пункта C можно попасть в пункт D. Из пункта D можно попасть в пункты E и F. Из пункта E можно попасть в пункт F.\n\nA—F: длина маршрута 15 км.\nA—B—C—D—F: длина маршрута 10 км.\nA—B—C—D—E—F: длина маршрута 7 км.\n\nСамый короткий путь: A—B—C—D—E—F. Длина маршрута 7 км.\n\nОтвет: 7.'
+  },
+  {
+    id: 7, num: 18258,
+    text: 'Между населёнными пунктами A, B, C, D, E, F построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E', 'F'],
+      matrix: [
+        [null, 3, 5, null, null, 15],
+        [3, null, null, 4, null, null],
+        [5, null, null, 2, null, null],
+        [null, 4, 2, null, 3, 6],
+        [null, null, null, 3, null, 4],
+        [15, null, null, 6, 4, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и F. Передвигаться можно только по дорогам, указанным в таблице.',
+    answer: '13',
+    solution: 'Найдём все варианты маршрутов из A в F и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, C, F. Из пункта B можно попасть в пункт D. Из пункта C можно попасть в пункт D. Из пункта D можно попасть в пункты E, F. Из пункта E можно попасть в пункт F.\n\nA—B—D—E—F: длина маршрута 14 км.\nA—B—D—F: длина маршрута 13 км.\nA—C—D—E—F: длина маршрута 14 км.\nA—C—D—F: длина маршрута 13 км.\nA—F: длина маршрута 15 км.\n\nСамый короткий путь: A—B—D—F или A—C—D—F. Длина маршрута 13 км.\n\nОтвет: 13.'
+  },
+  {
+    id: 8, num: 18273,
+    text: 'Между населёнными пунктами A, B, C, D, E, F построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E', 'F'],
+      matrix: [
+        [null, 3, 5, null, null, 15],
+        [3, null, 1, null, null, null],
+        [5, 1, null, 1, null, null],
+        [null, null, 1, null, 2, 6],
+        [null, null, null, 2, null, 2],
+        [15, null, null, 6, 2, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и F. Передвигаться можно только по дорогам, указанным в таблице.',
+    answer: '9',
+    solution: 'Найдём все варианты маршрутов из A в F и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, C, F. Из пункта B можно попасть в пункт C. Из пункта C можно попасть в пункт D. Из пункта D можно попасть в пункты E, F. Из пункта E можно попасть в пункт F.\n\nA—B—C—D—E—F: длина маршрута 9 км.\nA—B—C—D—F: длина маршрута 11 км.\nA—C—D—E—F: длина маршрута 10 км.\nA—C—D—F: длина маршрута 12 км.\nA—F: длина маршрута 15 км.\n\nСамый короткий путь: A—B—C—D—E—F. Длина маршрута 9 км.\n\nОтвет: 9.'
+  },
+  {
+    id: 9, num: 424,
+    text: 'Между населёнными пунктами А, В, С, D, Е, F построены дороги, протяжённость которых приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E', 'F'],
+      matrix: [
+        [null, 2, 5, null, null, 9],
+        [2, null, 2, 1, null, 5],
+        [5, 2, null, null, 1, null],
+        [null, 1, null, null, null, null],
+        [null, null, 1, null, null, 1],
+        [9, 5, null, null, 1, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами А и F. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.',
+    answer: '6',
+    solution: 'Найдём все варианты маршрутов из A в F и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, C, F. Из пункта B можно попасть в пункты C, D, F. Из пункта C можно попасть в пункт E. Из пункта E можно попасть в пункт F.\n\nA—C—E—F: длина маршрута 7 км.\nA—F: длина маршрута 9 км.\nA—B—C—E—F: длина маршрута 6 км.\nA—B—F: длина маршрута 7 км.\n\nСамый короткий путь: A—B—C—E—F. Длина маршрута 6 км.\n\nОтвет: 6.'
+  },
+  {
+    id: 10, num: 3,
+    text: 'Между населёнными пунктами А, В, С, D, Е построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 1, null, null, null],
+        [1, null, 2, 2, 7],
+        [null, 2, null, null, 3],
+        [null, 2, null, null, 4],
+        [null, 7, 3, 4, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами А и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.',
+    answer: '6',
+    solution: 'Найдём все варианты маршрутов из A в E и выберем самый короткий.\n\nИз пункта A можно попасть в пункт B. Из пункта B можно попасть в пункты C, D, E. Из пункта C можно попасть в пункт E. Из пункта D можно попасть в пункт E.\n\nA—B—C—E: длина маршрута 6 км.\nA—B—D—E: длина маршрута 7 км.\nA—B—E: длина маршрута 8 км.\n\nСамый короткий путь: A—B—C—E. Длина маршрута 6 км.\n\nОтвет: 6.'
+  },
+  {
+    id: 11, num: 1256,
+    text: 'Между населёнными пунктами A, B, C, D, E построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 6, null, 1, 4],
+        [6, null, 2, 5, null],
+        [null, 2, null, 2, null],
+        [1, 5, 2, null, 6],
+        [4, null, null, 6, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами B и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.',
+    answer: '9',
+    solution: 'Проанализируем некоторые возможные маршруты.\n\nМаршрут B—D—E, длина 11 км.\nМаршрут B—C—D—E, длина 10 км.\nМаршрут B—C—D—A—E, длина 9 км.\n\nЛюбые другие маршруты будут длиннее маршрута B—C—D—A—E. Самый короткий путь: B—C—D—A—E. Длина маршрута 9 км.\n\nОтвет: 9.'
+  },
+  {
+    id: 12, num: 1137,
+    text: 'Между населёнными пунктами A, B, C, D, E построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 5, 6, 10, 5],
+        [5, null, null, 4, null],
+        [6, null, null, 2, 7],
+        [10, 4, 2, null, 5],
+        [5, null, 7, 5, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и D. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.',
+    answer: '8',
+    solution: 'Из пункта A можно добраться в пункты B, C и D. Проанализируем некоторые возможные маршруты.\n\nМаршрут A—B—D, длина 9 км.\nМаршрут A—C—D, длина 8 км.\nМаршрут A—D, длина 10 км.\n\nЛюбые другие маршруты будут длиннее маршрута A—C—D. Самый короткий путь: A—C—D. Длина маршрута 8 км.\n\nОтвет: 8.'
+  },
+  {
+    id: 13, num: 1117,
+    text: 'Между населёнными пунктами A, B, C, D, E построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 2, 1, null, 5],
+        [2, null, 4, null, null],
+        [1, 4, null, 1, 4],
+        [null, null, 1, null, 2],
+        [5, null, 4, 2, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами B и E (при условии, что передвигаться можно только по построенным дорогам).',
+    answer: '6',
+    solution: 'Из пункта B можно добраться в пункт C. Проанализируем некоторые возможные маршруты.\n\nМаршрут B—C—E, длина 8 км.\nМаршрут B—C—A—E, длина 10 км.\nМаршрут B—A—C—D—E, длина 6 км.\n\nЛюбые другие маршруты будут длиннее маршрута B—A—C—D—E. Самый короткий путь: B—A—C—D—E. Длина маршрута 6 км.\n\nОтвет: 6.'
+  },
+  {
+    id: 14, num: 4500,
+    text: 'Между населёнными пунктами A, B, C, D, E построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 6, null, null, 3],
+        [6, null, 2, 5, 1],
+        [null, 2, null, 2, null],
+        [null, 5, 2, null, 6],
+        [3, 1, null, 6, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и D. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.',
+    answer: '8',
+    solution: 'Найдём все варианты маршрутов из A в D и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B и E. Из пункта B можно попасть в пункты E и D. Из пункта C можно попасть в пункт D. Из пункта E можно попасть в пункт D.\n\nA—B—D: длина маршрута 11 км.\nA—B—C—D: длина маршрута 10 км.\nA—B—E—D: длина маршрута 13 км.\nA—E—D: длина маршрута 9 км.\nA—E—B—C—D: длина маршрута 8 км.\n\nСамый короткий путь: A—E—B—C—D. Длина маршрута 8 км.\n\nОтвет: 8.'
+  },
+  {
+    id: 15, num: 1097,
+    text: 'Между населёнными пунктами A, B, C, D, E построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 1, 5, null, 2],
+        [1, null, null, 6, null],
+        [5, null, null, 1, 7],
+        [null, 6, 1, null, null],
+        [2, null, 7, null, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и D (при условии, что передвигаться можно только по построенным дорогам).',
+    answer: '6',
+    solution: 'Из пункта A можно добраться в пункты B, C и D. Проанализируем некоторые возможные маршруты.\n\nМаршрут A—B—D, длина 7 км.\nМаршрут A—C—D, длина 6 км.\nМаршрут A—E—C—D явно длиннее маршрута A—C—D.\n\nЛюбые другие маршруты будут длиннее маршрута A—C—D. Самый короткий путь: A—C—D. Длина маршрута 6 км.\n\nОтвет: 6.'
+  },
+  {
+    id: 16, num: 37272,
+    text: 'Между населёнными пунктами A, B, C, D, E построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 8, null, null, 5],
+        [8, null, null, 3, 3],
+        [null, null, null, 2, 1],
+        [null, 3, 2, null, null],
+        [5, 3, 1, null, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и D. Передвигаться можно только по дорогам, протяжённость которых указана в таблице. Каждый пункт можно посетить только один раз.',
+    answer: '8',
+    solution: 'Найдём все варианты маршрутов из A в D и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, E. Из пункта B можно попасть в пункты D, E. Из пункта C можно попасть в пункты D, E.\n\nA—B—D: длина маршрута 11 км.\nA—E—B—D: длина маршрута 11 км.\nA—B—E—C—D: длина маршрута 14 км.\nA—E—C—D: длина маршрута 8 км.\n\nСамый короткий путь: A—E—C—D. Длина маршрута 8 км.\n\nОтвет: 8.'
+  },
+  {
+    id: 17, num: 5797,
+    text: 'Между населёнными пунктами A, B, C, D построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D'],
+      matrix: [
+        [null, 5, 8, 3],
+        [5, null, 2, 1],
+        [8, 2, null, 4],
+        [3, 1, 4, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и C. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.',
+    answer: '6',
+    solution: 'Найдём все варианты маршрутов из A в C и выберем самый короткий.\n\nA—B—C: длина маршрута <span class="formula">5 + 2 = 7</span> км.\nA—C: длина маршрута 8 км.\nA—D—C: длина маршрута <span class="formula">3 + 4 = 7</span> км.\nA—D—B—C: длина маршрута <span class="formula">3 + 1 + 2 = 6</span> км.\nA—B—D—C: длина маршрута <span class="formula">5 + 1 + 4 = 10</span> км.\n\nСамый короткий путь: A—D—B—C. Длина маршрута 6 км.\n\nОтвет: 6.'
+  },
+  {
+    id: 18, num: 1157,
+    text: 'Между населёнными пунктами A, B, C, D построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D'],
+      matrix: [
+        [null, 2, 7, 4],
+        [2, null, 5, 1],
+        [7, 5, null, 2],
+        [4, 1, 2, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами A и C. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.',
+    answer: '5',
+    solution: 'Из пункта A можно добраться в пункты B, C и D. Проанализируем некоторые возможные маршруты.\n\nМаршрут A—B—C, длина 7 км.\nМаршрут A—D—C, длина 6 км.\nМаршрут A—B—D—C, длина 5 км.\n\nЛюбые другие маршруты будут длиннее маршрута A—B—D—C. Самый короткий путь: A—B—D—C. Длина маршрута 5 км.\n\nОтвет: 5.'
+  },
+  {
+    id: 19, num: 103,
+    text: 'Между населёнными пунктами А, В, С, D, Е построены дороги, протяжённость которых (в километрах) приведена в таблице.',
+    graph: {
+      nodes: ['A', 'B', 'C', 'D', 'E'],
+      matrix: [
+        [null, 7, 4, null, null],
+        [7, null, 2, null, 4],
+        [4, 2, null, 4, null],
+        [null, null, 4, null, 4],
+        [null, 4, null, 4, null]
+      ]
+    },
+    question: 'Определите длину кратчайшего пути между пунктами А и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.',
+    answer: '10',
+    solution: 'Найдём все варианты маршрутов из A в E и выберем самый короткий.\n\nИз пункта A можно попасть в пункты B, C. Из пункта B можно попасть в пункты C, E. Из пункта C можно попасть в пункт D. Из пункта D можно попасть в пункт E.\n\nA—B—C—D—E: длина маршрута 17 км.\nA—B—E: длина маршрута 11 км.\nA—C—D—E: длина маршрута 12 км.\nA—C—B—E: длина маршрута 10 км.\n\nСамый короткий путь: A—C—B—E. Длина маршрута 10 км.\n\nОтвет: 10.'
+  },
+  {
+    id: 20, num: 564,
+    text: 'Иван-Царевич спешит выручить Марью-Царевну из плена Кощея. В таблице указана протяжённость дорог между пунктами, через которые он может пройти.',
+    graph: {
+      nodes: ['А', 'Б', 'В', 'Г', 'И', 'М'],
+      matrix: [
+        [null, null, 1, null, 1, null],
+        [null, null, 2, null, 1, 3],
+        [1, 2, null, null, null, null],
+        [null, null, null, null, 6, 1],
+        [1, 1, null, 6, null, 8],
+        [null, 3, null, 1, 8, null]
+      ]
+    },
+    question: 'Укажите длину самого короткого участка кратчайшего пути от Ивана-Царевича до Марьи-Царевны (от точки И до точки М). Передвигаться можно только по дорогам, указанным в таблице.',
+    answer: '1',
+    solution: 'Найдём все варианты маршрутов из И в М и выберем самый короткий.\n\nИз пункта И можно попасть в пункты А, Б, Г, М. Из пункта Г можно попасть в пункты И, М. Из пункта В можно попасть в пункты А, Б. Из пункта Б можно попасть в пункты В, И, М.\n\nИ—А—В—Б—М: длина маршрута 7 км.\nИ—Б—М: длина маршрута 4 км.\nИ—Г—М: длина маршрута 7 км.\nИ—М: длина маршрута 8 км.\n\nСамый короткий путь: И—Б—М. Длина маршрута 4 км. Но в задаче требуется найти длину самого короткого участка этого пути.\n\nСамый короткий участок этого пути И—Б равен 1 км.\n\nПримечание: заметим, что в задаче требуется найти не длину самого кратчайшего пути (она равна 4 км), а длину самого короткого участка этого пути.\n\nОтвет: 1.'
+  }
+];
+
+const state = {
+  currentTab: 'theory',
+  answers1: {}, showSolution1: {},
+  answers2: {}, results2: null
+};
+
+function buildGraphTable(graph) {
+  const wrap = document.createElement('div');
+  wrap.className = 'graph-wrap';
+  const table = document.createElement('table');
+  table.className = 'graph-table';
+  const head = document.createElement('tr');
+  const corner = document.createElement('th');
+  corner.textContent = '';
+  head.appendChild(corner);
+  graph.nodes.forEach(n => {
+    const th = document.createElement('th');
+    th.textContent = n;
+    head.appendChild(th);
+  });
+  table.appendChild(head);
+  graph.matrix.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    const th = document.createElement('th');
+    th.textContent = graph.nodes[i];
+    tr.appendChild(th);
+    row.forEach(cell => {
+      const td = document.createElement('td');
+      if (cell === null || cell === undefined) {
+        td.className = 'empty';
+        td.textContent = '';
+      } else {
+        td.textContent = cell;
+      }
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+
+function renderSolutionBlocks(container, solutionText) {
+  const parts = solutionText.split('\n\n');
+  parts.forEach(part => {
+    const trimmed = part.trim();
+    if (!trimmed) return;
+    const p = document.createElement('p');
+    p.innerHTML = trimmed.replace(/\n/g, '<br>');
+    container.appendChild(p);
+  });
+}
+
+function renderTheory() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  const intro = document.createElement('section');
+  intro.className = 'card';
+  intro.innerHTML = `
+    <h2 class="card-title">Графы и взвешенные матрицы</h2>
+    <p><strong>Граф</strong> — это формальное описание сети объектов: <strong>вершины</strong> (населённые пункты, станции) соединены <strong>рёбрами</strong> (дорогами). Если каждому ребру приписано число — длина, время или стоимость — такой граф называется <strong>взвешенным</strong>.</p>
+    <p>В задании 4 ОГЭ условие даётся в виде <strong>таблицы смежности</strong>: строки и столбцы — это пункты, а на пересечении стоит длина дороги между ними. Пустая клетка означает, что прямой дороги между пунктами нет.</p>
+    <div class="note">
+      <strong>Важно:</strong> дороги в таких задачах двусторонние (граф неориентированный), поэтому таблица симметрична относительно главной диагонали: длина дороги A—B равна длине дороги B—A.
+    </div>
+  `;
+  app.appendChild(intro);
+
+  const types = document.createElement('section');
+  types.className = 'card';
+  types.innerHTML = `
+    <h2 class="card-title">Типы заданий</h2>
+    <h3>📊 Тип А: Кратчайший путь между двумя пунктами</h3>
+    <p>«Определите длину кратчайшего пути между пунктами А и F». Перебираем все маршруты и выбираем минимум.</p>
+    <h3>📊 Тип Б: Кратчайший путь через пункт</h3>
+    <p>«Определите длину кратчайшего пути между пунктами А и F, <strong>проходящего через пункт Е</strong>». Рассматриваем только те маршруты, которые содержат нужную вершину.</p>
+    <h3>📊 Тип В: Хитрые формулировки</h3>
+    <p>«Укажите длину <strong>самого короткого участка</strong> кратчайшего пути» — сначала находим весь путь, затем выбираем минимальное ребро внутри него (задание №564).</p>
+    <div class="note note-warn">
+      <strong>Ловушка:</strong> прямая дорога — не всегда самая короткая! Например, путь A—F напрямую может быть 15 км, а в обход A—B—C—D—E—F — всего 7 км. Всегда проверяйте обходные маршруты.
+    </div>
+  `;
+  app.appendChild(types);
+
+  const algo = document.createElement('section');
+  algo.className = 'card';
+  algo.innerHTML = `
+    <h2 class="card-title">Алгоритм решения</h2>
+    <ol>
+      <li><strong>Прочитайте таблицу</strong> и выпишите все прямые соединения с длинами (или нарисуйте граф: точки и линии с числами).</li>
+      <li><strong>Перечислите маршруты</strong> от старта к финишу систематически: сначала короткие ветки, затем обходы. Удобно двигаться по графу, не пропуская развилки.</li>
+      <li><strong>Посчитайте длину</strong> каждого маршрута — сумму длин его рёбер.</li>
+      <li><strong>Выберите минимум</strong> и запишите ответ без единиц измерения.</li>
+    </ol>
+    <div class="note note-info">
+      <strong>Совет:</strong> если маршрут должен проходить через пункт C, сразу вычёркивайте все варианты без C. Если в условии сказано «каждый пункт можно посетить только один раз» — не возвращайтесь в уже посещённые вершины.
+    </div>
+  `;
+  app.appendChild(algo);
+
+  const example1 = document.createElement('section');
+  example1.className = 'card';
+  example1.innerHTML = `
+    <h2 class="card-title">Разбор примера 1 (путь через пункт)</h2>
+    <p><strong>Задание №37526.</strong> Между населёнными пунктами A, B, C, D, E построены дороги, протяжённость которых (в километрах) приведена в таблице.</p>
+    <div class="graph-wrap">
+      <table class="graph-table">
+        <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+        <tr><th>A</th><td class="empty"></td><td>17</td><td>19</td><td class="empty"></td><td class="empty"></td></tr>
+        <tr><th>B</th><td>17</td><td class="empty"></td><td>2</td><td>2</td><td>8</td></tr>
+        <tr><th>C</th><td>19</td><td>2</td><td class="empty"></td><td class="empty"></td><td>6</td></tr>
+        <tr><th>D</th><td class="empty"></td><td>2</td><td class="empty"></td><td class="empty"></td><td>1</td></tr>
+        <tr><th>E</th><td class="empty"></td><td>8</td><td>6</td><td>1</td><td class="empty"></td></tr>
+      </table>
+    </div>
+    <p>Определите длину кратчайшего пути между пунктами A и Е, проходящего через пункт С. Передвигаться можно только по дорогам, протяжённость которых указана в таблице, два раза посещать один пункт нельзя.</p>
+
+    <h3>Решение</h3>
+    <p>Найдём все варианты маршрутов из A в Е, проходящих через С, и выберем самый короткий.</p>
+    <p>Из пункта A можно попасть в пункты B, C. Из пункта B можно попасть в пункты C, D, E. Из пункта C можно попасть в пункт E. Из пункта D можно попасть в пункт E.</p>
+    <p>A—C—E: длина маршрута 25 км.<br>
+    A—C—B—E: длина маршрута 29 км.<br>
+    A—C—B—D—E: длина маршрута 24 км.<br>
+    A—B—C—E: длина маршрута 25 км.</p>
+    <p>Самый короткий путь: <strong>A—C—B—D—E</strong>. Длина маршрута 24 км.</p>
+    <div class="note note-success">
+      <strong>Ответ: 24</strong>
+    </div>
+  `;
+  app.appendChild(example1);
+
+  const example2 = document.createElement('section');
+  example2.className = 'card';
+  example2.innerHTML = `
+    <h2 class="card-title">Разбор примера 2 (простой кратчайший путь)</h2>
+    <p><strong>Задание №524.</strong> Между населёнными пунктами А, В, С, D, Е, F построены дороги, протяжённость которых приведена в таблице:</p>
+    <div class="graph-wrap">
+      <table class="graph-table">
+        <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+        <tr><th>A</th><td class="empty"></td><td class="empty"></td><td>2</td><td>1</td><td class="empty"></td><td class="empty"></td></tr>
+        <tr><th>B</th><td class="empty"></td><td class="empty"></td><td>1</td><td class="empty"></td><td class="empty"></td><td>3</td></tr>
+        <tr><th>C</th><td>2</td><td>1</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>6</td></tr>
+        <tr><th>D</th><td>1</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>1</td><td>6</td></tr>
+        <tr><th>E</th><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>1</td><td class="empty"></td><td>5</td></tr>
+        <tr><th>F</th><td class="empty"></td><td>3</td><td>6</td><td>6</td><td>5</td><td class="empty"></td></tr>
+      </table>
+    </div>
+    <p>Определите длину кратчайшего пути между пунктами А и F (при условии, что передвигаться можно только по построенным дорогам).</p>
+
+    <h3>Решение</h3>
+    <p>Найдём все варианты маршрутов из A в F и выберем самый короткий.</p>
+    <p>Из пункта A можно попасть в пункты C, D. Из пункта B можно попасть в пункты C, F. Из пункта C можно попасть в пункт F. Из пункта D можно попасть в пункты E, F. Из пункта E можно попасть в пункт F.</p>
+    <p>A—C—F: длина маршрута 8 км.<br>
+    A—C—B—F: длина маршрута 6 км.<br>
+    A—D—E—F: длина маршрута 7 км.<br>
+    A—D—F: длина маршрута 7 км.</p>
+    <p>Самый короткий путь: <strong>A—C—B—F</strong>. Длина маршрута 6 км.</p>
+    <div class="note note-success">
+      <strong>Ответ: 6</strong>
+    </div>
+  `;
+  app.appendChild(example2);
+
+  const mistakes = document.createElement('section');
+  mistakes.className = 'card';
+  mistakes.innerHTML = `
+    <h2 class="card-title">Типичные ошибки</h2>
+    <ul>
+      <li>❌ Считать прямую дорогу кратчайшей, не проверив обходные маршруты</li>
+      <li>❌ Терять маршруты при переборе (не рисовать граф и не выписывать ветвления)</li>
+      <li>❌ Не замечать требование «через пункт С» или «каждый пункт — только один раз»</li>
+      <li>❌ Брать числа не из своей строки таблицы (путать строки и столбцы)</li>
+      <li>❌ В заданиях-ловушках отвечать длиной всего пути вместо длины самого короткого участка</li>
+    </ul>
+    <div class="note">
+      <strong>Совет:</strong> после того как нашли кратчайший маршрут, пройдите по таблице ещё раз и сложите длины рёбер — это защита от арифметических ошибок.
+    </div>
+  `;
+  app.appendChild(mistakes);
+}
+
+function createTaskElement(task, num, mode) {
+  const taskEl = document.createElement('article');
+  taskEl.className = 'task';
+  taskEl.dataset.taskId = task.id;
+
+  const header = document.createElement('div');
+  header.className = 'task-header';
+  const numEl = document.createElement('span');
+  numEl.className = 'task-num';
+  numEl.textContent = 'Задание ' + num + ' №' + task.num;
+  header.appendChild(numEl);
+  const linkEl = document.createElement('a');
+  linkEl.className = 'task-link';
+  linkEl.href = 'https://inf-oge.sdamgia.ru/problem?id=' + task.num;
+  linkEl.target = '_blank';
+  linkEl.rel = 'noopener';
+  linkEl.textContent = 'Оригинал ↗';
+  header.appendChild(linkEl);
+  taskEl.appendChild(header);
+
+  const textEl = document.createElement('p');
+  textEl.className = 'task-text';
+  textEl.innerHTML = task.text.replace(/\n/g, '<br>');
+  taskEl.appendChild(textEl);
+
+  taskEl.appendChild(buildGraphTable(task.graph));
+
+  if (task.question) {
+    const q = document.createElement('p');
+    q.className = 'task-text';
+    q.innerHTML = task.question.replace(/\n/g, '<br>');
+    taskEl.appendChild(q);
+  }
+
+  const inputGroup = document.createElement('div');
+  inputGroup.className = 'input-group';
+  const label = document.createElement('label');
+  label.className = 'input-label';
+  label.htmlFor = 'input-' + mode + '-' + task.id;
+  label.textContent = 'Ваш ответ:';
+  inputGroup.appendChild(label);
+  const input = document.createElement('input');
+  input.className = 'input';
+  input.id = 'input-' + mode + '-' + task.id;
+  input.type = 'text';
+  input.autocomplete = 'off';
+  input.placeholder = 'Введите число';
+  input.addEventListener('input', (e) => updateAnswer(mode, task.id, e.target.value));
+  inputGroup.appendChild(input);
+  taskEl.appendChild(inputGroup);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+  if (mode === 'practice1') {
+    const checkBtn = document.createElement('button');
+    checkBtn.className = 'btn btn-primary';
+    checkBtn.textContent = 'Проверить';
+    checkBtn.addEventListener('click', () => checkTask1(task.id));
+    btnRow.appendChild(checkBtn);
+    const solBtn = document.createElement('button');
+    solBtn.className = 'btn btn-secondary';
+    solBtn.textContent = 'Показать решение';
+    solBtn.addEventListener('click', () => toggleSolution1(task.id));
+    btnRow.appendChild(solBtn);
+  }
+  taskEl.appendChild(btnRow);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback';
+  feedback.id = 'feedback-' + task.id;
+  taskEl.appendChild(feedback);
+
+  const solution = document.createElement('div');
+  solution.className = 'solution';
+  solution.id = 'solution-' + task.id;
+  const solTitle = document.createElement('div');
+  solTitle.className = 'solution-title';
+  solTitle.textContent = 'Решение:';
+  solution.appendChild(solTitle);
+  renderSolutionBlocks(solution, task.solution);
+  const solAnswer = document.createElement('p');
+  solAnswer.style.marginTop = '10px';
+  solAnswer.style.fontWeight = '600';
+  solAnswer.style.color = 'var(--text)';
+  solAnswer.textContent = 'Ответ: ' + task.answer;
+  solution.appendChild(solAnswer);
+  taskEl.appendChild(solution);
+
+  return taskEl;
+}
+
+function renderPractice1() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">⚡ Практика 1</h2>
+      <p class="section-desc">10 заданий. После каждого можно сразу проверить ответ и посмотреть решение.</p>
+    </div>
+  `;
+  app.appendChild(head);
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice1-tasks';
+  app.appendChild(tasksBlock);
+  TASKS.slice(0, 10).forEach((task, idx) => {
+    tasksBlock.appendChild(createTaskElement(task, idx + 1, 'practice1'));
+  });
+}
+
+function renderPractice2() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">📝 Практика 2</h2>
+      <p class="section-desc">10 заданий. Ответы вводите сразу, но проверка — одной кнопкой в конце.</p>
+    </div>
+  `;
+  app.appendChild(head);
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice2-tasks';
+  app.appendChild(tasksBlock);
+  TASKS.slice(10, 20).forEach((task, idx) => {
+    tasksBlock.appendChild(createTaskElement(task, idx + 1, 'practice2'));
+  });
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn btn-primary btn-block';
+  checkBtn.textContent = '✓ Проверить все ответы';
+  checkBtn.style.marginTop = '8px';
+  checkBtn.addEventListener('click', checkAllPractice2);
+  app.appendChild(checkBtn);
+  const resultsPanel = document.createElement('div');
+  resultsPanel.className = 'results-panel';
+  resultsPanel.id = 'results-panel-2';
+  app.appendChild(resultsPanel);
+}
+
+function updateAnswer(mode, taskId, value) {
+  if (mode === 'practice1') {
+    state.answers1[taskId] = value;
+    state.showSolution1[taskId] = false;
+    const input = document.getElementById('input-practice1-' + taskId);
+    const fb = document.getElementById('feedback-' + taskId);
+    const sol = document.getElementById('solution-' + taskId);
+    if (input) input.classList.remove('correct', 'wrong');
+    if (fb) fb.classList.remove('show');
+    if (sol) sol.classList.remove('show');
+  } else {
+    state.answers2[taskId] = value;
+  }
+}
+
+function checkTask1(taskId) {
+  const task = TASKS.find(t => t.id === taskId);
+  if (!task) return;
+  const input = document.getElementById('input-practice1-' + taskId);
+  const feedback = document.getElementById('feedback-' + taskId);
+  if (!input || !feedback) return;
+  const userAnswer = (state.answers1[taskId] || '').trim();
+  if (!userAnswer) {
+    feedback.className = 'feedback show error';
+    feedback.textContent = 'Введите ответ перед проверкой.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+    return;
+  }
+  if (userAnswer === task.answer) {
+    feedback.className = 'feedback show success';
+    feedback.textContent = '✓ Верно! Отличная работа.';
+    input.classList.remove('wrong');
+    input.classList.add('correct');
+  } else {
+    feedback.className = 'feedback show error';
+    feedback.textContent = '✗ Неверно. Правильный ответ: ' + task.answer + '. Посмотрите решение.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+  }
+}
+
+function toggleSolution1(taskId) {
+  state.showSolution1[taskId] = !state.showSolution1[taskId];
+  const sol = document.getElementById('solution-' + taskId);
+  if (sol) sol.classList.toggle('show', state.showSolution1[taskId]);
+}
+
+function checkAllPractice2() {
+  const results = [];
+  let correct = 0;
+  TASKS.slice(10, 20).forEach((task, idx) => {
+    const userAnswer = (state.answers2[task.id] || '').trim();
+    const isCorrect = userAnswer === task.answer;
+    if (isCorrect) correct++;
+    results.push({ num: idx + 1, task, userAnswer: userAnswer || '—', isCorrect });
+  });
+  state.results2 = results;
+  renderResults2(results, correct);
+}
+
+function renderResults2(results, correct) {
+  const panel = document.getElementById('results-panel-2');
+  if (!panel) return;
+  panel.innerHTML = '';
+  panel.classList.add('show');
+  const score = document.createElement('div');
+  score.className = 'results-score';
+  score.innerHTML = `
+    <div class="results-score-num">${correct} / 10</div>
+    <div class="results-score-label">правильных ответов</div>
+  `;
+  panel.appendChild(score);
+  const progress = document.createElement('div');
+  progress.className = 'progress-bar';
+  const fill = document.createElement('div');
+  fill.className = 'progress-fill';
+  fill.style.width = (correct * 10) + '%';
+  progress.appendChild(fill);
+  panel.appendChild(progress);
+  results.forEach(r => {
+    const item = document.createElement('div');
+    item.className = 'result-item ' + (r.isCorrect ? 'correct' : 'wrong');
+    const head = document.createElement('div');
+    head.className = 'result-item-head';
+    const numEl = document.createElement('span');
+    numEl.className = 'result-item-num';
+    numEl.textContent = 'Задание ' + r.num + ' №' + r.task.num;
+    head.appendChild(numEl);
+    const status = document.createElement('span');
+    status.className = 'result-item-status ' + (r.isCorrect ? 'correct' : 'wrong');
+    status.textContent = r.isCorrect ? 'Верно' : 'Неверно';
+    head.appendChild(status);
+    item.appendChild(head);
+    const answers = document.createElement('div');
+    answers.className = 'result-item-answers';
+    answers.innerHTML = '<strong>Ваш ответ:</strong> ' + escapeHtml(r.userAnswer) + ' · <strong>Правильный:</strong> ' + escapeHtml(r.task.answer);
+    item.appendChild(answers);
+    if (!r.isCorrect) {
+      const sol = document.createElement('div');
+      sol.className = 'result-item-solution';
+      renderSolutionBlocks(sol, r.task.solution);
+      item.appendChild(sol);
+    }
+    panel.appendChild(item);
+  });
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function switchTab(tabName) {
+  state.currentTab = tabName;
+  document.querySelectorAll('.tab').forEach(t => {
+    const isActive = t.dataset.tab === tabName;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  if (tabName === 'theory') renderTheory();
+  else if (tabName === 'practice1') renderPractice1();
+  else if (tabName === 'practice2') renderPractice2();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+  });
+  renderTheory();
+}
+
+init();
+</script>
+</body>
+</html>
