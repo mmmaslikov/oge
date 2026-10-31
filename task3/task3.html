@@ -130,6 +130,21 @@ code { font-family: "Consolas", "Monaco", monospace; background: var(--bg-soft);
 @media (max-width: 640px) {
   .header-title { font-size: 24px; }
   .ops-grid { grid-template-columns: 1fr; }
+/* Код-окно в стиле macOS */
+.code-window { background: #0d1117; border-radius: 14px; margin: 14px 0; overflow: hidden; box-shadow: var(--shadow); border: 1px solid #1f242c; }
+.code-window-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #161b22; border-bottom: 1px solid #21262d; }
+.dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.dot.red { background: #ff5f57; }
+.dot.yellow { background: #febc2e; }
+.dot.green { background: #28c840; }
+.code-filename { margin-left: 10px; font-family: "Consolas", "Monaco", monospace; font-size: 13px; color: #8b949e; }
+.code-window-body { padding: 18px 22px; overflow-x: auto; font-family: "Consolas", "Monaco", monospace; font-size: 13.5px; line-height: 1.75; color: #e6edf3; white-space: pre; margin: 0; }
+.tok-kw { color: #ff7ab2; font-weight: 600; }
+.tok-fn { color: #79c0ff; }
+.tok-str { color: #ffa657; }
+.tok-num { color: #f2cc60; }
+.tok-com { color: #8b949e; font-style: italic; }
+@media (max-width: 640px) { .code-window-body { font-size: 12px; padding: 12px 14px; } }
 }
 </style>
 </head>
@@ -310,19 +325,75 @@ const state = {
   answers2: {}, results2: null
 };
 
+function highlightCode(code, lang) {
+  const esc = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const pyKw = new Set(['if','elif','else','while','for','in','and','or','not','def','return','break','continue','import','from','as','True','False','None','lambda','global']);
+  const pyFn = new Set(['print','input','int','str','float','range','len','abs','max','min','sum']);
+  const algKw = new Set(['алг','нач','кон','цел','если','то','иначе','все','нц','кц','раз','использовать','и','или','не','div','mod']);
+  const algFn = new Set(['ввод','вывод']);
+  const re = /(#[^\n]*|\/\/[^\n]*)|("(?:[^"\n]|\\")*"|'(?:[^'\n]|\\')*')|(\d+(?:\.\d+)?)|([A-Za-z_А-Яа-яЁё][A-Za-z_0-9А-Яа-яЁё]*)/g;
+  let out = '', last = 0, m;
+  while ((m = re.exec(esc)) !== null) {
+    out += esc.slice(last, m.index);
+    if (m[1]) out += '<span class="tok-com">' + m[1] + '</span>';
+    else if (m[2]) out += '<span class="tok-str">' + m[2] + '</span>';
+    else if (m[3]) out += '<span class="tok-num">' + m[3] + '</span>';
+    else if (m[4]) {
+      const w = m[4];
+      if (lang === 'alg') {
+        if (algKw.has(w)) out += '<span class="tok-kw">' + w + '</span>';
+        else if (algFn.has(w)) out += '<span class="tok-fn">' + w + '</span>';
+        else out += w;
+      } else {
+        if (pyKw.has(w)) out += '<span class="tok-kw">' + w + '</span>';
+        else if (pyFn.has(w)) out += '<span class="tok-fn">' + w + '</span>';
+        else out += w;
+      }
+    }
+    last = m.index + m[0].length;
+  }
+  return out + esc.slice(last);
+}
+
+function makeCodeWindow(code, lang, filename) {
+  const wrap = document.createElement('div');
+  wrap.className = 'code-window';
+  const head = document.createElement('div');
+  head.className = 'code-window-header';
+  head.innerHTML = '<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="code-filename"></span>';
+  head.querySelector('.code-filename').textContent = filename;
+  const pre = document.createElement('pre');
+  pre.className = 'code-window-body';
+  pre.innerHTML = highlightCode(code, lang);
+  wrap.appendChild(head);
+  wrap.appendChild(pre);
+  return wrap;
+}
+
+/* Автоматически превращает старые статичные блоки .code-block в окна */
+function upgradeStaticCodeBlocks(root) {
+  (root || document).querySelectorAll('.code-block').forEach(old => {
+    const code = old.textContent;
+    const lang = /алг|использовать Черепаха|ввод |вывод |нц |кц /.test(code) ? 'alg' : 'py';
+    old.replaceWith(makeCodeWindow(code, lang, lang === 'alg' ? 'program.alg' : 'program.py'));
+  });
+}
+  
 function renderSolutionBlocks(container, solutionText) {
-  const parts = solutionText.split('\n\n');
-  parts.forEach(part => {
+  solutionText.split('\n\n').forEach(part => {
     const trimmed = part.trim();
     if (!trimmed) return;
-    if (trimmed.startsWith('PY:')) {
-      const code = document.createElement('div');
-      code.className = 'code-block';
-      code.textContent = trimmed.slice(3);
-      container.appendChild(code);
+    if (trimmed.startsWith('CODE:')) {
+      const nl = trimmed.indexOf('\n');
+      const h = trimmed.slice(5, nl).split(':');
+      container.appendChild(makeCodeWindow(trimmed.slice(nl + 1), h[0], h[1]));
+    } else if (trimmed.startsWith('PY:')) {
+      container.appendChild(makeCodeWindow(trimmed.slice(3), 'py', 'reshenie.py'));
+    } else if (trimmed.startsWith('KM:')) {
+      container.appendChild(makeCodeWindow(trimmed.slice(3), 'alg', 'kumir.alg'));
     } else {
       const p = document.createElement('p');
-      p.innerHTML = trimmed;
+      p.innerHTML = trimmed.replace(/\n/g, '<br>');
       container.appendChild(p);
     }
   });
@@ -499,6 +570,7 @@ print(k)</div>
     </div>
   `;
   app.appendChild(mistakes);
+  upgradeStaticCodeBlocks(app);
 }
 
 function createTaskElement(task, num, mode) {
