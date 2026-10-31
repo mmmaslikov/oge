@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ Информатика — Задание 6. Программа с условным оператором</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f5f5f7;
+  --bg-card: #ffffff;
+  --text: #1d1d1f;
+  --text-soft: #515154;
+  --text-muted: #86868b;
+  --border: #d2d2d7;
+  --border-soft: #e8e8ed;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-soft: #e8f4fd;
+  --success: #34c759;
+  --success-soft: #eafaf1;
+  --error: #ff3b30;
+  --error-soft: #fff0ef;
+  --warning: #ff9500;
+  --warning-soft: #fff8eb;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg-soft);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body { padding: 16px; }
+.container { max-width: 1000px; margin: 0 auto; }
+.header { background: var(--bg-card); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); }
+.header-title { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.header-sub { color: var(--text-soft); font-size: 15px; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; font-size: 13px; color: var(--text-muted); }
+.header-meta span { display: flex; align-items: center; gap: 6px; }
+.tabs { display: flex; gap: 8px; background: var(--bg-card); padding: 8px; border-radius: var(--radius); margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); overflow-x: auto; }
+.tab { flex: 1; min-width: 140px; padding: 12px 16px; border: none; background: transparent; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--text-soft); cursor: pointer; transition: all 0.2s; font-family: inherit; white-space: nowrap; }
+.tab:hover { background: var(--bg-soft); color: var(--text); }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tab.active { background: var(--accent); color: white; box-shadow: var(--shadow-sm); }
+.card { background: var(--bg-card); border-radius: var(--radius); padding: 26px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); }
+.card-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em; }
+h3 { font-size: 17px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+p { margin-bottom: 12px; color: var(--text-soft); }
+p:last-child { margin-bottom: 0; }
+ul, ol { margin: 10px 0 14px 24px; color: var(--text-soft); }
+li { margin-bottom: 6px; }
+strong { color: var(--text); font-weight: 600; }
+/* Встроенный код: тот же шрифт, что и основной текст, но жирный */
+code {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 700;
+  color: var(--text);
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+.note { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 10px; margin: 16px 0; font-size: 14px; color: var(--text); }
+.note-warn { background: var(--warning-soft); border-left-color: var(--warning); }
+.note-success { background: var(--success-soft); border-left-color: var(--success); }
+.note-info { background: #f0f9ff; border-left-color: #0ea5e9; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 20px; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.15s; min-height: 44px; min-width: 44px; text-decoration: none; }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--bg-soft); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border-soft); }
+.btn-block { width: 100%; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.task { background: var(--bg-card); border-radius: var(--radius); padding: 22px; margin-bottom: 16px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm); }
+.task-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+.task-num { font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 20px; }
+.task-text { color: var(--text); font-size: 15px; margin-bottom: 14px; line-height: 1.65; }
+.pairs-box { background: var(--bg-soft); border: 1px solid var(--border-soft); border-radius: var(--radius-sm); padding: 12px 16px; margin: 12px 0; font-size: 14px; color: var(--text); }
+.pairs-box .pairs-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.pairs-box .pairs-values { font-family: "Consolas", "Monaco", monospace; font-weight: 600; }
+
+/* Код-окно в стиле macOS */
+.code-window { background: #0d1117; border-radius: 14px; margin: 14px 0; overflow: hidden; box-shadow: var(--shadow); border: 1px solid #1f242c; }
+.code-window-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #161b22; border-bottom: 1px solid #21262d; }
+.dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.dot.red { background: #ff5f57; }
+.dot.yellow { background: #febc2e; }
+.dot.green { background: #28c840; }
+.code-filename { margin-left: 10px; font-family: "Consolas", "Monaco", monospace; font-size: 13px; color: #8b949e; }
+.code-window-body { padding: 18px 22px; overflow-x: auto; font-family: "Consolas", "Monaco", monospace; font-size: 13.5px; line-height: 1.75; color: #e6edf3; white-space: pre; margin: 0; }
+.tok-kw { color: #ff7ab2; font-weight: 600; }
+.tok-fn { color: #79c0ff; }
+.tok-str { color: #ffa657; }
+.tok-num { color: #f2cc60; }
+.tok-com { color: #8b949e; font-style: italic; }
+
+.input-group { margin-top: 14px; }
+.input-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-soft); margin-bottom: 6px; }
+.input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--bg-card); color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; min-height: 44px; }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.input.correct { border-color: var(--success); background: var(--success-soft); }
+.input.wrong { border-color: var(--error); background: var(--error-soft); }
+.feedback { margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 14px; display: none; }
+.feedback.show { display: block; }
+.feedback.success { background: var(--success-soft); color: #1b7a3d; border: 1px solid #b7ebc9; }
+.feedback.error { background: var(--error-soft); color: #c41e14; border: 1px solid #f5c6c2; }
+.solution { margin-top: 12px; padding: 16px 18px; background: var(--bg-soft); border-radius: var(--radius-sm); border-left: 3px solid var(--accent); font-size: 14px; line-height: 1.7; display: none; }
+.solution.show { display: block; }
+.solution-title { font-weight: 600; margin-bottom: 8px; color: var(--text); }
+.solution p { margin-bottom: 10px; }
+.solution p:last-child { margin-bottom: 0; }
+.solution .formula { font-weight: 700; color: var(--text); font-family: "Consolas", "Monaco", monospace; background: var(--bg-card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+/* Подзаголовки внутри решения */
+.sol-sub { margin: 14px 0 6px; font-weight: 700; color: var(--text); font-size: 14px; }
+.solution .sol-sub:first-of-type { margin-top: 4px; }
+/* Незаметная ссылка на оригинал внутри решения */
+.solution-link { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--text-muted); text-decoration: none; }
+.solution-link:hover { color: var(--accent); text-decoration: underline; }
+.results-panel { background: var(--bg-card); border-radius: var(--radius); padding: 24px; margin-top: 20px; border: 1px solid var(--border-soft); box-shadow: var(--shadow); display: none; }
+.results-panel.show { display: block; }
+.results-score { text-align: center; padding: 22px; background: var(--accent-soft); border-radius: var(--radius-sm); margin-bottom: 16px; }
+.results-score-num { font-size: 52px; font-weight: 700; color: var(--accent); line-height: 1; }
+.results-score-label { font-size: 14px; color: var(--text-soft); margin-top: 6px; }
+.progress-bar { height: 6px; background: var(--border-soft); border-radius: 3px; overflow: hidden; margin: 12px 0; }
+.progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+.result-item { padding: 14px 16px; border-radius: var(--radius-sm); margin-bottom: 8px; border: 1px solid var(--border); font-size: 14px; }
+.result-item.correct { background: var(--success-soft); border-color: #b7ebc9; }
+.result-item.wrong { background: var(--error-soft); border-color: #f5c6c2; }
+.result-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
+.result-item-num { font-weight: 600; color: var(--text); }
+.result-item-status { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+.result-item-status.correct { background: var(--success); color: white; }
+.result-item-status.wrong { background: var(--error); color: white; }
+.result-item-answers { font-size: 13px; color: var(--text-soft); }
+.result-item-answers strong { color: var(--text); }
+.result-item-solution { margin-top: 10px; font-size: 13px; color: var(--text-soft); line-height: 1.7; }
+.result-item-solution p { margin-bottom: 8px; }
+.result-item-solution .code-window { margin: 8px 0; }
+.result-item-solution .code-window-body { font-size: 12px; padding: 12px 14px; }
+.result-item-solution .formula { font-weight: 700; color: var(--text); font-family: "Consolas", "Monaco", monospace; background: var(--bg-card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+.result-item-solution .sol-sub { font-size: 13px; }
+.footer { text-align: center; padding: 20px; font-size: 13px; color: var(--text-muted); margin-top: 20px; }
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.section-desc { font-size: 14px; color: var(--text-muted); }
+.lang-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 12px 0 2px; }
+@media (max-width: 640px) {
+  .header-title { font-size: 24px; }
+  .code-window-body { font-size: 12px; padding: 12px 14px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1 class="header-title">Задание 6. Программа с условным оператором</h1>
+    <p class="header-sub">Подготовка к ОГЭ по информатике · 9 класс</p>
+    <div class="header-meta">
+      <span>👨‍🏫 Учитель: Масликов М.М.</span>
+      <span>⏱ Время: 2 урока (80 мин)</span>
+      <span>📚 20 заданий</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="theory" role="tab" aria-selected="true">📖 Теория</button>
+    <button class="tab" data-tab="practice1" role="tab" aria-selected="false">⚡ Практика 1</button>
+    <button class="tab" data-tab="practice2" role="tab" aria-selected="false">📝 Практика 2</button>
+  </nav>
+
+  <main id="app"></main>
+
+  <footer class="footer">
+    <p>Практические задания оформлены по материалам <a href="https://inf-oge.sdamgia.ru" target="_blank" rel="noopener">Решу ОГЭ (Сдам ГИА)</a></p>
+    <p style="margin-top:6px;">© 2026 · Учебный материал для подготовки к ОГЭ</p>
+  </footer>
+</div>
+
+<script>
+/* ========== Подсветка кода и код-окна ========== */
+function highlightCode(code, lang) {
+  const esc = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const pyKw = new Set(['if','elif','else','while','for','in','and','or','not','def','return','break','continue','import','from','as','True','False','None','lambda','global']);
+  const pyFn = new Set(['print','input','int','str','float','range','len','abs','max','min','sum']);
+  const algKw = new Set(['алг','нач','кон','цел','если','то','иначе','все','нц','кц','раз','использовать','и','или','не','div','mod']);
+  const algFn = new Set(['ввод','вывод']);
+  const re = /(#[^\n]*|\/\/[^\n]*)|("(?:[^"\n]|\\")*"|'(?:[^'\n]|\\')*')|(\d+(?:\.\d+)?)|([A-Za-z_А-Яа-яЁё][A-Za-z_0-9А-Яа-яЁё]*)/g;
+  let out = '', last = 0, m;
+  while ((m = re.exec(esc)) !== null) {
+    out += esc.slice(last, m.index);
+    if (m[1]) out += '<span class="tok-com">' + m[1] + '</span>';
+    else if (m[2]) out += '<span class="tok-str">' + m[2] + '</span>';
+    else if (m[3]) out += '<span class="tok-num">' + m[3] + '</span>';
+    else if (m[4]) {
+      const w = m[4];
+      if (lang === 'alg') {
+        if (algKw.has(w)) out += '<span class="tok-kw">' + w + '</span>';
+        else if (algFn.has(w)) out += '<span class="tok-fn">' + w + '</span>';
+        else out += w;
+      } else {
+        if (pyKw.has(w)) out += '<span class="tok-kw">' + w + '</span>';
+        else if (pyFn.has(w)) out += '<span class="tok-fn">' + w + '</span>';
+        else out += w;
+      }
+    }
+    last = m.index + m[0].length;
+  }
+  out += esc.slice(last);
+  return out;
+}
+
+function makeCodeWindow(code, lang, filename) {
+  const wrap = document.createElement('div');
+  wrap.className = 'code-window';
+  const head = document.createElement('div');
+  head.className = 'code-window-header';
+  head.innerHTML = '<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="code-filename"></span>';
+  head.querySelector('.code-filename').textContent = filename;
+  const pre = document.createElement('pre');
+  pre.className = 'code-window-body';
+  pre.innerHTML = highlightCode(code, lang);
+  wrap.appendChild(head);
+  wrap.appendChild(pre);
+  return wrap;
+}
+
+function renderSolutionBlocks(container, solutionText) {
+  const parts = solutionText.split('\n\n');
+  parts.forEach(part => {
+    const trimmed = part.trim();
+    if (!trimmed) return;
+    if (trimmed.startsWith('CODE:')) {
+      const nl = trimmed.indexOf('\n');
+      const header = trimmed.slice(5, nl).split(':');
+      const code = trimmed.slice(nl + 1);
+      container.appendChild(makeCodeWindow(code, header[0], header[1]));
+    } else if (trimmed.startsWith('SUB:')) {
+      const d = document.createElement('div');
+      d.className = 'sol-sub';
+      d.textContent = trimmed.slice(4);
+      container.appendChild(d);
+    } else {
+      const p = document.createElement('p');
+      p.innerHTML = trimmed.replace(/\n/g, '<br>');
+      container.appendChild(p);
+    }
+  });
+}
+
+function makeOriginalLink(num) {
+  const a = document.createElement('a');
+  a.className = 'solution-link';
+  a.href = 'https://inf-oge.sdamgia.ru/problem?id=' + num;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.textContent = 'Оригинал задания ↗';
+  return a;
+}
+
+/* ========== Данные заданий ========== */
+const TASKS = [
+  {
+    id: 1, num: 10461,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(8, 8); (9, 6); (4, 7); (6, 6); (–9, –2); (–5, 9); (–10, 10); (6, 9); (10, 6)',
+    py: `s = int(input())
+t = int(input())
+if s > 8 or t > 8:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если s > 8 или t > 8
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «NO»?',
+    answer: '4',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «NO», если обе введённые переменные s и t будут меньше или равны 8. Значит, было 4 запуска, при которых программа напечатала «NO». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (8, 8); (4, 7); (6, 6); (–9, –2).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if s > 8 or t > 8:
+        return 0
+    else:
+        return 1
+a = ((8, 8), (9, 6), (4, 7), (6, 6), (-9, -2), (-5, 9), (-10, 10), (6, 9), (10, 6))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 2, num: 10463,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(9, 9); (9, 10); (8, 5); (11, 6); (–11, 10); (–5, 9); (–10, 10); (4, 5); (8, 6)',
+    py: `s = int(input())
+t = int(input())
+if s < 9 or t < 9:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если s < 9 или t < 9
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «YES»?',
+    answer: '7',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если одна из введённых переменных s и t будет меньше 9. Значит, было 7 запусков, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (8, 5); (11, 6); (–11, 10); (–5, 9); (–10, 10); (4, 5); (8, 6).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if s < 9 or t < 9:
+        return 1
+    else:
+        return 0
+a = ((9, 9), (9, 10), (8, 5), (11, 6), (-11, 10), (-5, 9), (-10, 10), (4, 5), (8, 6))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 3, num: 43715,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и k вводились следующие пары чисел:',
+    pairs: '(1, 2); (5, 0); (18, 3); (21, 1); (10, 2); (12, 1); (9, 4); (5, 5); (3, 3)',
+    py: `s = int(input())
+k = int(input())
+if s % 5 == k:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, k
+ввод s
+ввод k
+если mod(s, 5) = k
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «YES»?',
+    answer: '5',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если переменная k будет равна результату остатка деления s на 5. Значит, было 5 запусков, при которых программа напечатала «YES». В качестве значений переменных s и k в этих случаях вводились следующие пары чисел: (5, 0); (18, 3); (21, 1); (9, 4); (3, 3).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, k):
+    if s % 5 == k:
+        return 1
+    else:
+        return 0
+a = ((1, 2), (5, 0), (18, 3), (21, 1), (10, 2), (12, 1), (9, 4), (5, 5), (3, 3))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 4, num: 18036,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(13, 2); (11, 12); (–12, 12); (2, –2); (–10, –10); (6, –5); (2, 8); (9, 10); (1, 13)',
+    py: `s = int(input())
+t = int(input())
+A = int(input())
+if (s > A) or (t > 12):
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t, A
+ввод s
+ввод t
+ввод A
+если s > A или t > 12
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Укажите наименьшее целое значение параметра A, при котором для указанных входных данных программа напечатает «NO» восемь раз.',
+    answer: '13',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «NO», если переменная t будет меньше или равна 12, а переменная s — меньше или равна А. Из первой части условия получаем, что при вводе значений s и t (1, 13) программа напечатает «YES» вне зависимости от значения A. При отрицательных значениях A программа будет выводить «YES» больше одного раза.
+
+Заметим, что при A = 1 программа напечатает «NO» два раза, при 2 ≤ A ≤ 5 — четыре раза, при 6 ≤ A ≤ 8 — пять раз, при 9 ≤ A ≤ 10 — шесть раз, при 11 ≤ A ≤ 12 — семь раз, а при A = 13 программа будет печатать «NO» восемь раз. Таким образом, ответ — 13.
+
+SUB:💻 Программное решение
+
+CODE:py:podbor_A.py
+def f(s, t, A):
+    if (s > A) or (t > 12):
+        return 0
+    else:
+        return 1
+a = ((13, 2), (11, 12), (-12, 12), (2, -2), (-10, -10), (6, -5), (2, 8), (9, 10), (1, 13))
+for A in range(100):
+    count = 0
+    for i in range(9):
+        count += f(a[i][0], a[i][1], A)
+    if count == 8:
+        print(A)
+        break`
+  },
+  {
+    id: 5, num: 10893,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(–2, 3); (2, 5); (0, 3); (5, –3); (5, 4); (11, 4); (8, –6); (1, 7); (9, 1)',
+    py: `s = int(input())
+t = int(input())
+if s > 2 and t < 5:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если s > 2 и t < 5
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «NO»?',
+    answer: '4',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «NO», если переменная s будет меньше или равна 2 или переменная t будет больше или равна 5. Значит, было 4 запуска, при которых программа напечатала «NO». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (–2, 3); (2, 5); (0, 3); (1, 7).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if s > 2 and t < 5:
+        return 0
+    else:
+        return 1
+a = ((-2, 3), (2, 5), (0, 3), (5, -3), (5, 4), (11, 4), (8, -6), (1, 7), (9, 1))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 6, num: 37331,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(1, 2); (11, 2); (1, 12); (11, 12); (–11, –12); (–11, 12); (–12, 11); (10, 10); (10, 5)',
+    py: `s = int(input())
+t = int(input())
+A = int(input())
+if (s > 10) or (t > A):
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t, A
+ввод s
+ввод t
+ввод A
+если s > 10 или t > A
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Укажите количество целых значений параметра A, при которых для указанных входных данных программа напечатает «YES» семь раз.',
+    answer: '3',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если переменная s будет больше 10 или переменная t будет больше А. Из первой части условия получаем, что при вводе значений s и t (11, 2), (11, 12) программа напечатает «YES» вне зависимости от значения A. При отрицательных значениях A программа будет выводить «YES» больше семи раз.
+
+Заметим, что при A = 0 или при A = 1 программа напечатает «YES» восемь раз, при 2 ≤ A < 5 программа напечатает «YES» семь раз. Таким образом, подходят значения A = 2, 3, 4 — всего 3 значения.
+
+SUB:💻 Программное решение
+
+CODE:py:podbor_A.py
+def f(s, t, A):
+    if (s > 10) or (t > A):
+        return 1
+    else:
+        return 0
+a = ((1, 2), (11, 2), (1, 12), (11, 12), (-11, -12), (-11, 12), (-12, 11), (10, 10), (10, 5))
+kol = 0
+for A in range(100):
+    count = 0
+    for i in range(9):
+        count += f(a[i][0], a[i][1], A)
+    if count == 7:
+        kol += 1
+print(kol)`
+  },
+  {
+    id: 7, num: 18189,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и k вводились следующие пары чисел:',
+    pairs: '(1, 1); (10, 8); (9, –12); (6, 6); (5, 15); (–10, –8); (–10, 11); (3, 1); (1, 8)',
+    py: `s = int(input())
+k = int(input())
+if s < 8 and k < 8:
+    print("ДА")
+else:
+    print("НЕТ")`,
+    alg: `алг
+нач
+цел s, k
+ввод s
+ввод k
+если s < 8 и k < 8
+    то вывод "ДА"
+    иначе вывод "НЕТ"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «ДА»?',
+    answer: '4',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «ДА», если переменная s будет меньше 8 и переменная k — меньше 8. Значит, было 4 запуска, при которых программа напечатала «ДА». В качестве значений переменных s и k в этих случаях вводились следующие пары чисел: (1, 1); (6, 6); (–10, –8); (3, 1).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, k):
+    if s < 8 and k < 8:
+        return 1
+    else:
+        return 0
+a = ((1, 1), (10, 8), (9, -12), (6, 6), (5, 15), (-10, -8), (-10, 11), (3, 1), (1, 8))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 8, num: 37236,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(9, 9); (9, 10); (8, 5); (11, 6); (–11, 10); (–5, 9); (–10, 10); (4, 5); (8, 6)',
+    py: `s = int(input())
+t = int(input())
+if s < 5 and not t > 3:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если s < 5 и не t > 3
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «NO»?',
+    answer: '9',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что в условии перед переменной t стоит логическое отрицание, значит, программа напечатает «YES», если переменная s будет меньше 5 и переменная t будет меньше или равна 3, в остальных случаях программа напечатает «NO». Среди заданных пар нет ни одной, удовлетворяющей условию «YES», значит, было 9 запусков, при которых программа напечатала «NO».
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if s < 5 and not (t > 3):
+        return 0
+    else:
+        return 1
+a = ((9, 9), (9, 10), (8, 5), (11, 6), (-11, 10), (-5, 9), (-10, 10), (4, 5), (8, 6))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 9, num: 37468,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(12, 5); (5, 3); (–4, 1); (2, –5); (5, –7); (10, 3); (18, 6); (3, 0); (2, 5)',
+    py: `s = int(input())
+t = int(input())
+if not((s >= 2) and (t < 5)):
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если не (s >= 2 и t < 5)
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «YES»?',
+    answer: '4',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если переменная s меньше 2 или переменная t — больше или равна 5 (отрицание условия s ≥ 2 и t < 5 по закону де Моргана). Значит, было 4 запуска, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (12, 5); (–4, 1); (18, 6); (2, 5).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if not ((s >= 2) and (t < 5)):
+        return 1
+    else:
+        return 0
+a = ((12, 5), (5, 3), (-4, 1), (2, -5), (5, -7), (10, 3), (18, 6), (3, 0), (2, 5))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 10, num: 18275,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и k вводились следующие пары чисел:',
+    pairs: '(1, 2); (8, 4); (6, –12); (–5, –5); (3, 11); (–10, 12); (–10, –2); (4, 1); (2, 5)',
+    py: `s = int(input())
+k = int(input())
+if s >= 2 * k:
+    print("ДА")
+else:
+    print("НЕТ")`,
+    alg: `алг
+нач
+цел s, k
+ввод s
+ввод k
+если s >= 2 * k
+    то вывод "ДА"
+    иначе вывод "НЕТ"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «ДА»?',
+    answer: '4',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «ДА», если переменная s будет больше или равна 2k. Значит, было 4 запуска, при которых программа напечатала «ДА». В качестве значений переменных s и k в этих случаях вводились следующие пары чисел: (8, 4); (6, –12); (–5, –5); (4, 1).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, k):
+    if s >= 2 * k:
+        return 1
+    else:
+        return 0
+a = ((1, 2), (8, 4), (6, -12), (-5, -5), (3, 11), (-10, 12), (-10, -2), (4, 1), (2, 5))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 11, num: 10953,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(2, 5); (5, 2); (4, 4); (2, –2); (3, 1); (8, 3); (9, –7); (7, 7); (4, 6)',
+    py: `s = int(input())
+t = int(input())
+if s < 5 or t > 5:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если s < 5 или t > 5
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «YES»?',
+    answer: '6',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если переменная s будет меньше 5 или переменная t будет больше 5. Значит, было 6 запусков, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (2, 5); (4, 4); (2, –2); (3, 1); (7, 7); (4, 6).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if s < 5 or t > 5:
+        return 1
+    else:
+        return 0
+a = ((2, 5), (5, 2), (4, 4), (2, -2), (3, 1), (8, 3), (9, -7), (7, 7), (4, 6))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 12, num: 37483,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(2, –2); (5, 3); (14, 1); (–12, 5); (5, 7); (10, 3); (8, 2); (3, 0); (–4, 9)',
+    py: `s = int(input())
+t = int(input())
+if not(s > -4) or (t < 3):
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если не s > -4 или t < 3
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «YES»?',
+    answer: '6',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если переменная s будет меньше или равна –4 или переменная t — меньше 3. Значит, было 6 запусков, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (2, –2); (14, 1); (–12, 5); (8, 2); (3, 0); (–4, 9).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if not (s > -4) or (t < 3):
+        return 1
+    else:
+        return 0
+a = ((2, -2), (5, 3), (14, 1), (-12, 5), (5, 7), (10, 3), (8, 2), (3, 0), (-4, 9))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 13, num: 10465,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(6, 4); (7, 8); (8, 5); (5, 6); (11, 10); (–5, 7); (–2, 2); (4, 5); (8, 6)',
+    py: `s = int(input())
+t = int(input())
+if s < 10 or t < 10:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если s < 10 или t < 10
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «YES»?',
+    answer: '8',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если хотя бы одна из введённых переменных s и t будет меньше 10. Значит, было 8 запусков, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (6, 4); (7, 8); (8, 5); (5, 6); (–5, 7); (–2, 2); (4, 5); (8, 6).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if s < 10 or t < 10:
+        return 1
+    else:
+        return 0
+a = ((6, 4), (7, 8), (8, 5), (5, 6), (11, 10), (-5, 7), (-2, 2), (4, 5), (8, 6))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 14, num: 18290,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и k вводились следующие пары чисел:',
+    pairs: '(1, 2); (8, 4); (6, –12); (–5, –5); (3, 11); (–10, 12); (–10, –2); (4, 1); (2, 5)',
+    py: `s = int(input())
+k = int(input())
+if s <= 2 * k:
+    print("ДА")
+else:
+    print("НЕТ")`,
+    alg: `алг
+нач
+цел s, k
+ввод s
+ввод k
+если s <= 2 * k
+    то вывод "ДА"
+    иначе вывод "НЕТ"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «ДА»?',
+    answer: '6',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «ДА», если переменная s будет меньше или равна 2k. Значит, было 6 запусков, при которых программа напечатала «ДА». В качестве значений переменных s и k в этих случаях вводились следующие пары чисел: (1, 2); (8, 4); (3, 11); (–10, 12); (–10, –2); (2, 5).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, k):
+    if s <= 2 * k:
+        return 1
+    else:
+        return 0
+a = ((1, 2), (8, 4), (6, -12), (-5, -5), (3, 11), (-10, 12), (-10, -2), (4, 1), (2, 5))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 15, num: 36851,
+    text: 'Ниже приведена программа, записанная на трёх языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(13, 2); (11, 12); (–12, 12); (2, –2); (–10, –10); (6, –5); (2, 8); (9, 10); (1, 13)',
+    py: `s = int(input())
+t = int(input())
+A = int(input())
+if (s > A) or t > 12:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t, A
+ввод s
+ввод t
+ввод A
+если s > A или t > 12
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Укажите наименьшее целое значение параметра A, при котором для указанных входных данных программа напечатает «YES» четыре раза.',
+    answer: '6',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если переменная t будет больше 12 или переменная s будет больше А. Из первой части условия получаем, что при вводе значений s и t (1, 13) программа напечатает «YES» вне зависимости от значения A. При отрицательных значениях A программа будет выводить «YES» больше четырёх раз.
+
+Заметим, что при A = 1 программа напечатает «YES» семь раз, при 2 ≤ A ≤ 5 — пять раз, а при A = 6 программа будет печатать «YES» четыре раза. Таким образом, ответ — 6.
+
+SUB:💻 Программное решение
+
+CODE:py:podbor_A.py
+def f(s, t, A):
+    if (s > A) or (t > 12):
+        return 1
+    else:
+        return 0
+a = ((13, 2), (11, 12), (-12, 12), (2, -2), (-10, -10), (6, -5), (2, 8), (9, 10), (1, 13))
+for A in range(100):
+    count = 0
+    for i in range(9):
+        count += f(a[i][0], a[i][1], A)
+    if count == 4:
+        print(A)
+        break`
+  },
+  {
+    id: 16, num: 47995,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(1, 2); (11, 2); (1, 12); (11, 12); (–11, –12); (–11, 12); (–12, 11); (10, 10); (10, 5)',
+    py: `s = int(input())
+t = int(input())
+A = int(input())
+if (s > 10) or (t > A):
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t, A
+ввод s
+ввод t
+ввод A
+если s > 10 или t > A
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Укажите целое значение параметра А, при котором для указанных входных данных программа напечатает «YES» пять раз.',
+    answer: '10',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если переменная s будет больше 10 или переменная t будет больше А. Из первой части условия получаем, что при вводе значений s и t (11, 2), (11, 12) программа напечатает «YES» вне зависимости от значения A. При отрицательных значениях A программа будет выводить «YES» больше семи раз.
+
+Заметим, что при A = 0 или при A = 1 программа напечатает «YES» восемь раз, при 2 ≤ A < 5 — семь раз, при 5 ≤ A < 10 — шесть раз, при A = 10 программа напечатает «YES» пять раз. Таким образом, ответ — 10.
+
+SUB:💻 Программное решение
+
+CODE:py:podbor_A.py
+def f(s, t, A):
+    if (s > 10) or (t > A):
+        return 1
+    else:
+        return 0
+a = ((1, 2), (11, 2), (1, 12), (11, 12), (-11, -12), (-11, 12), (-12, 11), (10, 10), (10, 5))
+for A in range(100):
+    count = 0
+    for i in range(9):
+        count += f(a[i][0], a[i][1], A)
+    if count == 5:
+        print(A)
+        break`
+  },
+  {
+    id: 17, num: 10950,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(–1, 6); (2, 8); (0, 3); (9, –9); (4, 4); (2, 7); (8, –2); (7, 7); (4, 1)',
+    py: `s = int(input())
+t = int(input())
+if s > 3 or t < 7:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если s > 3 или t < 7
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «YES»?',
+    answer: '7',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если переменная s будет больше 3 или переменная t будет меньше 7. Значит, было 7 запусков, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (–1, 6); (0, 3); (9, –9); (4, 4); (8, –2); (7, 7); (4, 1).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if s > 3 or t < 7:
+        return 1
+    else:
+        return 0
+a = ((-1, 6), (2, 8), (0, 3), (9, -9), (4, 4), (2, 7), (8, -2), (7, 7), (4, 1))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 18, num: 12855,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(3, 5); (4, 3); (4, –5); (0, 7); (0, –2); (–2, 1); (–2, 5); (–2, –4); (1, 2)',
+    py: `s = int(input())
+t = int(input())
+if s < 1 and t < 2:
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t
+ввод s
+ввод t
+если s < 1 и t < 2
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «YES»?',
+    answer: '3',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «YES», если переменная s будет меньше 1, а переменная t — меньше 2. Значит, было 3 запуска, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (0, –2); (–2, 1); (–2, –4).
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, t):
+    if s < 1 and t < 2:
+        return 1
+    else:
+        return 0
+a = ((3, 5), (4, 3), (4, -5), (0, 7), (0, -2), (-2, 1), (-2, 5), (-2, -4), (1, 2))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 19, num: 18230,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и k вводились следующие пары чисел:',
+    pairs: '(1, 1); (8, 4); (14, 10); (20, 1); (7, 3); (10, 5); (10, 2); (4, 1); (1, 0)',
+    py: `s = int(input())
+k = int(input())
+if s // 2 == k:
+    print("ДА")
+else:
+    print("НЕТ")`,
+    alg: `алг
+нач
+цел s, k
+ввод s
+ввод k
+если div(s, 2) = k
+    то вывод "ДА"
+    иначе вывод "НЕТ"
+все
+кон`,
+    question: 'Сколько было запусков, при которых программа напечатала «НЕТ»?',
+    answer: '5',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «НЕТ», если переменная k не будет равна результату целочисленного деления s на 2. Значит, было 5 запусков, при которых программа напечатала «НЕТ». В качестве значений переменных s и k в этих случаях вводились следующие пары чисел: (1, 1); (14, 10); (20, 1); (10, 2); (4, 1).
+
+Примечание: в программе используется операция деления нацело. Результатом этой операции является целая часть частного. Так, например, 7 div 2 = 3.
+
+SUB:💻 Программное решение
+
+CODE:py:reshenie.py
+def f(s, k):
+    if s // 2 == k:
+        return 0
+    else:
+        return 1
+a = ((1, 1), (8, 4), (14, 10), (20, 1), (7, 3), (10, 5), (10, 2), (4, 1), (1, 0))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`
+  },
+  {
+    id: 20, num: 16014,
+    text: 'Ниже приведена программа, записанная на двух языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:',
+    pairs: '(1, 2); (11, 2); (1, 12); (11, 12); (–11, –12); (–11, 12); (–12, 11); (10, 10); (10, 5)',
+    py: `s = int(input())
+t = int(input())
+A = int(input())
+if (s > 10) or (t > A):
+    print("YES")
+else:
+    print("NO")`,
+    alg: `алг
+нач
+цел s, t, A
+ввод s
+ввод t
+ввод A
+если s > 10 или t > A
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`,
+    question: 'Укажите количество целых значений параметра A, при которых для указанных входных данных программа напечатает «NO» три раза.',
+    answer: '5',
+    solution: `SUB:🧠 Логическое решение
+
+Заметим, что программа напечатает «NO», если переменная s будет меньше или равна 10, а переменная t — меньше или равна А. Из первой части условия получаем, что при вводе значений s и t (11, 2) и (11, 12) программа напечатает «YES» вне зависимости от значения A.
+
+Заметим, что при A = 1 программа напечатает «NO» один раз, при 2 ≤ A ≤ 4 — два раза, при 5 ≤ A ≤ 9 — три раза, а при A > 9 программа будет печатать «NO» четыре и более раз. Таким образом, существует 5 значений параметра A, при которых «NO» будет напечатано три раза, а именно 5, 6, 7, 8, 9, следовательно, ответ — 5.
+
+SUB:💻 Программное решение
+
+CODE:py:podbor_A.py
+def f(s, t, A):
+    if (s > 10) or (t > A):
+        return 0
+    else:
+        return 1
+a = ((1, 2), (11, 2), (1, 12), (11, 12), (-11, -12), (-11, 12), (-12, 11), (10, 10), (10, 5))
+kol = 0
+for A in range(100):
+    count = 0
+    for i in range(9):
+        count += f(a[i][0], a[i][1], A)
+    if count == 3:
+        kol += 1
+print(kol)`
+  }
+];
+
+const state = {
+  currentTab: 'theory',
+  answers1: {}, showSolution1: {},
+  answers2: {}, results2: null
+};
+
+/* ========== Теория ========== */
+function renderTheory() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  const intro = document.createElement('section');
+  intro.className = 'card';
+  intro.innerHTML = `
+    <h2 class="card-title">Что проверяет задание 6</h2>
+    <p>В задании 6 даётся <strong>программа с условным оператором</strong> (ветвлением), записанная на нескольких языках. Программа считывает два числа и печатает «YES»/«NO» (или «ДА»/«НЕТ») в зависимости от выполнения условия. Сообщается, какие пары чисел подавались на вход при нескольких запусках.</p>
+    <p>Встречаются <strong>два типа вопросов</strong>:</p>
+    <ul>
+      <li><strong>Тип 1.</strong> Сколько было запусков, при которых программа напечатала «YES» (или «NO»)?</li>
+      <li><strong>Тип 2.</strong> Укажите наибольшее (наименьшее) целое значение параметра A, при котором для указанных входных данных программа напечатает «YES» (или «NO») заданное число раз.</li>
+    </ul>
+    <div class="note">
+      <strong>Ключевая идея:</strong> печатается «YES» или «NO» — зависит только от истинности условия ветвления. Поэтому задачу можно решить двумя способами: логическим анализом условия (часто через отрицание) или прямым перебором всех пар чисел в Python.
+    </div>
+  `;
+  app.appendChild(intro);
+
+  const langs = document.createElement('section');
+  langs.className = 'card';
+  langs.innerHTML = `
+    <h2 class="card-title">Условный оператор: Python и Алгоритмический язык</h2>
+    <p>В заданиях программа записана таблицей на нескольких языках. Нам достаточно двух столбцов — Python и Алгоритмического языка. Вот как соответствуют друг другу их конструкции:</p>
+    <div class="lang-label">Python</div>
+    <div id="theory-py-compare"></div>
+    <div class="lang-label">Алгоритмический язык</div>
+    <div id="theory-alg-compare"></div>
+    <ul>
+      <li>and / or / not в Python — это и / или / не в алгоритмическом языке;</li>
+      <li>s % 5 (остаток) — это mod(s, 5); s // 2 (деление нацело) — это div(s, 2);</li>
+      <li>в Python важен <strong>порядок операций</strong>: not t > 3 означает «неверно, что t > 3», то есть t ≤ 3;</li>
+      <li>блок else / иначе выполняется, когда условие ложно; в алгоритмическом языке ветвление закрывается словом все.</li>
+    </ul>
+    <div class="note note-info">
+      <strong>Совет:</strong> прежде чем считать запуски, перепишите условие ветвления в удобном виде. Например, «NO» печатается при отрицании условия: not (s > 8 or t > 8) = s ≤ 8 и t ≤ 8 (законы де Моргана).
+    </div>
+  `;
+  app.appendChild(langs);
+  document.getElementById('theory-py-compare').appendChild(makeCodeWindow(`s = int(input())
+t = int(input())
+if s > 10 and t > 10:
+    print("YES")
+else:
+    print("NO")`, 'py', 'primer.py'));
+  document.getElementById('theory-alg-compare').appendChild(makeCodeWindow(`алг
+нач
+цел s, t
+ввод s
+ввод t
+если s > 10 и t > 10
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`, 'alg', 'primer.alg'));
+
+  const types = document.createElement('section');
+  types.className = 'card';
+  types.innerHTML = `
+    <h2 class="card-title">Два типа вопросов и способы решения</h2>
+    <h3>📊 Тип 1. Сколько было запусков, при которых программа напечатала «YES» (или «NO»)?</h3>
+    <p><strong>Логическое решение:</strong> определите, при каком условии печатается нужный ответ (само условие ветвления или его отрицание), и посчитайте пары чисел, которые ему удовлетворяют.</p>
+    <p><strong>Программное решение:</strong> оформите условие ветвления как функцию f, возвращающую 1 для «YES» и 0 для «NO», и просуммируйте результаты по всем парам:</p>
+    <div id="theory-count-code"></div>
+    <div class="note">
+      <strong>Как читать ответ:</strong> если считали функцию «YES», то для вопроса про «NO» ответ = 9 − полученное число (всего запусков девять).
+    </div>
+    <h3>📊 Тип 2. Укажите наибольшее (наименьшее) целое значение параметра A, при котором программа напечатает «YES» (или «NO») заданное число раз</h3>
+    <p><strong>Логическое решение:</strong> выясните, какие пары дают нужный вывод при любом A (они фиксируют «неснимаемую» часть), а затем подбирайте A: чем больше A, тем чаще срабатывает условие s > A. Переберите граничные значения и найдите требуемое.</p>
+    <p><strong>Программное решение:</strong> полный перебор A с подсчётом количества нужных выводов:</p>
+    <div id="theory-a-code"></div>
+    <ul>
+      <li>Ищем <strong>наибольшее</strong> A — перебираем сверху: range(100, 0, -1) и останавливаемся на первом подходящем (break).</li>
+      <li>Ищем <strong>наименьшее</strong> A — перебираем снизу: range(100) и первый подходящий.</li>
+      <li>Если спрашивают <strong>количество</strong> целых значений A, при которых условие выполнено, — заводим счётчик kol и не прерываем цикл (разновидность типа 2).</li>
+    </ul>
+    <div class="note note-warn">
+      <strong>Внимание:</strong> пары, которые дают нужный вывод вне зависимости от A, нужно учесть отдельно — они «автоматически» добавляют счётчик и ограничивают перебор снизу или сверху.
+    </div>
+  `;
+  app.appendChild(types);
+  document.getElementById('theory-count-code').appendChild(makeCodeWindow(`def f(s, t):
+    if s > 10 and t > 10:   # условие ветвления из задачи
+        return 1            # напечатано "YES"
+    else:
+        return 0            # напечатано "NO"
+a = ((10, 10), (10, 6), (-4, 8), (2, 9), (12, 7),
+     (-11, 4), (-8, 13), (10, 9), (11, 11))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)                  # количество запусков с "YES"`, 'py', 'podschet.py'));
+  document.getElementById('theory-a-code').appendChild(makeCodeWindow(`def f(s, t, A):
+    if (s > A) or (t > 11):  # условие ветвления
+        return 1            # "YES"
+    else:
+        return 0            # "NO"
+a = ((-9, 11), (2, 7), (5, 12), (2, -2), (7, -9),
+     (12, 6), (9, -1), (7, 11), (11, -5))
+for A in range(100, 0, -1):  # ищем НАИБОЛЬШЕЕ A
+    count = 0
+    for i in range(9):
+        count += f(a[i][0], a[i][1], A)
+    if count == 3:           # "YES" ровно три раза
+        print(A)
+        break`, 'py', 'podbor_A.py'));
+
+  /* Пример 1 */
+  const ex1 = document.createElement('section');
+  ex1.className = 'card';
+  ex1.innerHTML = `
+    <h2 class="card-title">Разбор примера 1 (тип 1: подсчёт запусков)</h2>
+    <p><strong>Задание №10471.</strong> Ниже приведена программа, записанная на пяти языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:</p>
+    <div class="pairs-box">
+      <div class="pairs-label">Входные данные</div>
+      <div class="pairs-values">(10, 10); (10, 6); (–4, 8); (2, 9); (12, 7); (–11, 4); (–8, 13); (10, 9); (11, 11)</div>
+    </div>
+    <div class="lang-label">Python</div>
+    <div id="ex1-py"></div>
+    <div class="lang-label">Алгоритмический язык</div>
+    <div id="ex1-alg"></div>
+    <p><strong>Вопрос:</strong> сколько было запусков, при которых программа напечатала «NO»?</p>
+    <p class="sol-sub">🧠 Логическое решение</p>
+    <p>Заметим, что программа напечатает «NO», если одна из введённых переменных s и t будет меньше или равна 10 (отрицание условия s > 10 and t > 10). Значит, было 8 запусков, при которых программа напечатала «NO». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел: (10, 10); (10, 6); (–4, 8); (2, 9); (12, 7); (–11, 4); (–8, 13); (10, 9).</p>
+    <p class="sol-sub">💻 Программное решение</p>
+    <div id="ex1-sol"></div>
+    <div class="note note-success"><strong>Ответ: 8</strong></div>
+  `;
+  app.appendChild(ex1);
+  document.getElementById('ex1-py').appendChild(makeCodeWindow(`s = int(input())
+t = int(input())
+if s > 10 and t > 10:
+    print("YES")
+else:
+    print("NO")`, 'py', 'program.py'));
+  document.getElementById('ex1-alg').appendChild(makeCodeWindow(`алг
+нач
+цел s, t
+ввод s
+ввод t
+если s > 10 и t > 10
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`, 'alg', 'program.alg'));
+  document.getElementById('ex1-sol').appendChild(makeCodeWindow(`def f(s, t):
+    if s > 10 and t > 10:
+        return 0
+    else:
+        return 1
+a = ((10, 10), (10, 6), (-4, 8), (2, 9), (12, 7), (-11, 4), (-8, 13), (10, 9), (11, 11))
+kol = 0
+for i in range(9):
+    kol += f(a[i][0], a[i][1])
+print(kol)`, 'py', 'reshenie.py'));
+
+  /* Пример 2 */
+  const ex2 = document.createElement('section');
+  ex2.className = 'card';
+  ex2.innerHTML = `
+    <h2 class="card-title">Разбор примера 2 (тип 2: подбор параметра A)</h2>
+    <p><strong>Задание №43428.</strong> Ниже приведена программа, записанная на пяти языках программирования. Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:</p>
+    <div class="pairs-box">
+      <div class="pairs-label">Входные данные</div>
+      <div class="pairs-values">(–9, 11); (2, 7); (5, 12); (2, –2); (7, –9); (12, 6); (9, –1); (7, 11); (11, –5)</div>
+    </div>
+    <div class="lang-label">Python</div>
+    <div id="ex2-py"></div>
+    <div class="lang-label">Алгоритмический язык</div>
+    <div id="ex2-alg"></div>
+    <p><strong>Вопрос:</strong> укажите наибольшее целое значение параметра А, при котором для указанных входных данных программа напечатает «YES» три раза.</p>
+    <p class="sol-sub">🧠 Логическое решение</p>
+    <p>Заметим, что программа напечатает «YES», если переменная t будет больше 11 или переменная s будет больше А. Из первой части условия получаем, что при вводе значений s и t (5, 12) программа напечатает «YES» вне зависимости от значения A. При отрицательных значениях A программа будет выводить «YES» больше трёх раз.</p>
+    <p>Заметим, что при A = 1 программа напечатает «YES» восемь раз, при 2 ≤ A ≤ 9 программа напечатает «YES» семь раз, а при A = 10 программа будет печатать «YES» три раза. Таким образом, ответ — 10.</p>
+    <p class="sol-sub">💻 Программное решение</p>
+    <div id="ex2-sol"></div>
+    <div class="note note-success"><strong>Ответ: 10</strong></div>
+  `;
+  app.appendChild(ex2);
+  document.getElementById('ex2-py').appendChild(makeCodeWindow(`s = int(input())
+t = int(input())
+A = int(input())
+if (s > A) or (t > 11):
+    print("YES")
+else:
+    print("NO")`, 'py', 'program.py'));
+  document.getElementById('ex2-alg').appendChild(makeCodeWindow(`алг
+нач
+цел s, t, A
+ввод s
+ввод t
+ввод A
+если s > A или t > 11
+    то вывод "YES"
+    иначе вывод "NO"
+все
+кон`, 'alg', 'program.alg'));
+  document.getElementById('ex2-sol').appendChild(makeCodeWindow(`def f(s, t, A):
+    if (s > A) or (t > 11):
+        return 1
+    else:
+        return 0
+a = ((-9, 11), (2, 7), (5, 12), (2, -2), (7, -9), (12, 6), (9, -1), (7, 11), (11, -5))
+kol = 0
+for A in range(100, 0, -1):
+    count = 0
+    for i in range(9):
+        count += f(a[i][0], a[i][1], A)
+    if count == 3:
+        print(A)
+        break`, 'py', 'reshenie.py'));
+
+  const mistakes = document.createElement('section');
+  mistakes.className = 'card';
+  mistakes.innerHTML = `
+    <h2 class="card-title">Типичные ошибки</h2>
+    <ul>
+      <li>❌ Путать условия для «YES» и «NO»: «NO» печатается при <strong>отрицании</strong> условия ветвления</li>
+      <li>❌ Забывать про закон де Моргана: not (a and b) = not a or not b; not (a or b) = not a and not b</li>
+      <li>❌ Путать строгие и нестрогие сравнения: «меньше или равна» и «меньше» дают разные наборы пар</li>
+      <li>❌ В задачах с параметром A перебирать не в ту сторону: наибольшее A — сверху вниз, наименьшее — снизу вверх</li>
+      <li>❌ Не учитывать пары, дающие нужный вывод при любом A, — они сдвигают счётчик</li>
+      <li>❌ Путать % (остаток, mod) и // (деление нацело, div)</li>
+    </ul>
+    <div class="note">
+      <strong>Совет:</strong> после логического анализа обязательно проверьте себя перебором в Python — это занимает минуту и снимает все сомнения.
+    </div>
+  `;
+  app.appendChild(mistakes);
+}
+
+/* ========== Карточка задания ========== */
+function createTaskElement(task, num, mode) {
+  const taskEl = document.createElement('article');
+  taskEl.className = 'task';
+  taskEl.dataset.taskId = task.id;
+
+  const header = document.createElement('div');
+  header.className = 'task-header';
+  const numEl = document.createElement('span');
+  numEl.className = 'task-num';
+  numEl.textContent = 'Задание ' + num + ' №' + task.num;
+  header.appendChild(numEl);
+  taskEl.appendChild(header);
+
+  const textEl = document.createElement('p');
+  textEl.className = 'task-text';
+  textEl.innerHTML = task.text.replace(/\n/g, '<br>');
+  taskEl.appendChild(textEl);
+
+  const pairsBox = document.createElement('div');
+  pairsBox.className = 'pairs-box';
+  pairsBox.innerHTML = '<div class="pairs-label">Входные данные</div><div class="pairs-values"></div>';
+  pairsBox.querySelector('.pairs-values').textContent = task.pairs;
+  taskEl.appendChild(pairsBox);
+
+  const pyLabel = document.createElement('div');
+  pyLabel.className = 'lang-label';
+  pyLabel.textContent = 'Python';
+  taskEl.appendChild(pyLabel);
+  taskEl.appendChild(makeCodeWindow(task.py, 'py', 'program.py'));
+
+  const algLabel = document.createElement('div');
+  algLabel.className = 'lang-label';
+  algLabel.textContent = 'Алгоритмический язык';
+  taskEl.appendChild(algLabel);
+  taskEl.appendChild(makeCodeWindow(task.alg, 'alg', 'program.alg'));
+
+  const q = document.createElement('p');
+  q.className = 'task-text';
+  q.innerHTML = '<strong>' + task.question + '</strong>';
+  taskEl.appendChild(q);
+
+  const inputGroup = document.createElement('div');
+  inputGroup.className = 'input-group';
+  const label = document.createElement('label');
+  label.className = 'input-label';
+  label.htmlFor = 'input-' + mode + '-' + task.id;
+  label.textContent = 'Ваш ответ:';
+  inputGroup.appendChild(label);
+  const input = document.createElement('input');
+  input.className = 'input';
+  input.id = 'input-' + mode + '-' + task.id;
+  input.type = 'text';
+  input.autocomplete = 'off';
+  input.setAttribute('autocomplete', 'off');
+  input.setAttribute('autocorrect', 'off');
+  input.setAttribute('autocapitalize', 'off');
+  input.setAttribute('spellcheck', 'false');
+  input.setAttribute('data-lpignore', 'true');
+  input.placeholder = 'Введите число';
+  input.addEventListener('input', (e) => updateAnswer(mode, task.id, e.target.value));
+  inputGroup.appendChild(input);
+  taskEl.appendChild(inputGroup);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+  if (mode === 'practice1') {
+    const checkBtn = document.createElement('button');
+    checkBtn.className = 'btn btn-primary';
+    checkBtn.textContent = 'Проверить';
+    checkBtn.addEventListener('click', () => checkTask1(task.id));
+    btnRow.appendChild(checkBtn);
+    const solBtn = document.createElement('button');
+    solBtn.className = 'btn btn-secondary';
+    solBtn.textContent = 'Показать решение';
+    solBtn.addEventListener('click', () => toggleSolution1(task.id));
+    btnRow.appendChild(solBtn);
+  }
+  taskEl.appendChild(btnRow);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback';
+  feedback.id = 'feedback-' + task.id;
+  taskEl.appendChild(feedback);
+
+  const solution = document.createElement('div');
+  solution.className = 'solution';
+  solution.id = 'solution-' + task.id;
+  const solTitle = document.createElement('div');
+  solTitle.className = 'solution-title';
+  solTitle.textContent = 'Решение:';
+  solution.appendChild(solTitle);
+  renderSolutionBlocks(solution, task.solution);
+  const solAnswer = document.createElement('p');
+  solAnswer.style.marginTop = '10px';
+  solAnswer.style.fontWeight = '600';
+  solAnswer.style.color = 'var(--text)';
+  solAnswer.textContent = 'Ответ: ' + task.answer;
+  solution.appendChild(solAnswer);
+  solution.appendChild(makeOriginalLink(task.num));
+  taskEl.appendChild(solution);
+
+  return taskEl;
+}
+
+function renderPractice1() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">⚡ Практика 1</h2>
+      <p class="section-desc">10 заданий. После каждого можно сразу проверить ответ и посмотреть решение.</p>
+    </div>
+  `;
+  app.appendChild(head);
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice1-tasks';
+  app.appendChild(tasksBlock);
+  TASKS.slice(0, 10).forEach((task, idx) => {
+    tasksBlock.appendChild(createTaskElement(task, idx + 1, 'practice1'));
+  });
+}
+
+function renderPractice2() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">📝 Практика 2</h2>
+      <p class="section-desc">10 заданий. Ответы вводите сразу, но проверка — одной кнопкой в конце.</p>
+    </div>
+  `;
+  app.appendChild(head);
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice2-tasks';
+  app.appendChild(tasksBlock);
+  TASKS.slice(10, 20).forEach((task, idx) => {
+    tasksBlock.appendChild(createTaskElement(task, idx + 1, 'practice2'));
+  });
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn btn-primary btn-block';
+  checkBtn.textContent = '✓ Проверить все ответы';
+  checkBtn.style.marginTop = '8px';
+  checkBtn.addEventListener('click', checkAllPractice2);
+  app.appendChild(checkBtn);
+  const resultsPanel = document.createElement('div');
+  resultsPanel.className = 'results-panel';
+  resultsPanel.id = 'results-panel-2';
+  app.appendChild(resultsPanel);
+}
+
+/* ========== Проверка ========== */
+function updateAnswer(mode, taskId, value) {
+  if (mode === 'practice1') {
+    state.answers1[taskId] = value;
+    state.showSolution1[taskId] = false;
+    const input = document.getElementById('input-practice1-' + taskId);
+    const fb = document.getElementById('feedback-' + taskId);
+    const sol = document.getElementById('solution-' + taskId);
+    if (input) input.classList.remove('correct', 'wrong');
+    if (fb) fb.classList.remove('show');
+    if (sol) sol.classList.remove('show');
+  } else {
+    state.answers2[taskId] = value;
+  }
+}
+
+function checkTask1(taskId) {
+  const task = TASKS.find(t => t.id === taskId);
+  if (!task) return;
+  const input = document.getElementById('input-practice1-' + taskId);
+  const feedback = document.getElementById('feedback-' + taskId);
+  if (!input || !feedback) return;
+  const userAnswer = (state.answers1[taskId] || '').trim();
+  if (!userAnswer) {
+    feedback.className = 'feedback show error';
+    feedback.textContent = 'Введите ответ перед проверкой.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+    return;
+  }
+  if (userAnswer === task.answer) {
+    feedback.className = 'feedback show success';
+    feedback.textContent = '✓ Верно! Отличная работа.';
+    input.classList.remove('wrong');
+    input.classList.add('correct');
+  } else {
+    feedback.className = 'feedback show error';
+    feedback.textContent = '✗ Неверно. Правильный ответ: ' + task.answer + '. Посмотрите решение.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+  }
+}
+
+function toggleSolution1(taskId) {
+  state.showSolution1[taskId] = !state.showSolution1[taskId];
+  const sol = document.getElementById('solution-' + taskId);
+  if (sol) sol.classList.toggle('show', state.showSolution1[taskId]);
+}
+
+function checkAllPractice2() {
+  const results = [];
+  let correct = 0;
+  TASKS.slice(10, 20).forEach((task, idx) => {
+    const userAnswer = (state.answers2[task.id] || '').trim();
+    const isCorrect = userAnswer === task.answer;
+    if (isCorrect) correct++;
+    results.push({ num: idx + 1, task, userAnswer: userAnswer || '—', isCorrect });
+  });
+  state.results2 = results;
+  renderResults2(results, correct);
+}
+
+function renderResults2(results, correct) {
+  const panel = document.getElementById('results-panel-2');
+  if (!panel) return;
+  panel.innerHTML = '';
+  panel.classList.add('show');
+  const score = document.createElement('div');
+  score.className = 'results-score';
+  score.innerHTML = `
+    <div class="results-score-num">${correct} / 10</div>
+    <div class="results-score-label">правильных ответов</div>
+  `;
+  panel.appendChild(score);
+  const progress = document.createElement('div');
+  progress.className = 'progress-bar';
+  const fill = document.createElement('div');
+  fill.className = 'progress-fill';
+  fill.style.width = (correct * 10) + '%';
+  progress.appendChild(fill);
+  panel.appendChild(progress);
+  results.forEach(r => {
+    const item = document.createElement('div');
+    item.className = 'result-item ' + (r.isCorrect ? 'correct' : 'wrong');
+    const head = document.createElement('div');
+    head.className = 'result-item-head';
+    const numEl = document.createElement('span');
+    numEl.className = 'result-item-num';
+    numEl.textContent = 'Задание ' + r.num + ' №' + r.task.num;
+    head.appendChild(numEl);
+    const status = document.createElement('span');
+    status.className = 'result-item-status ' + (r.isCorrect ? 'correct' : 'wrong');
+    status.textContent = r.isCorrect ? 'Верно' : 'Неверно';
+    head.appendChild(status);
+    item.appendChild(head);
+    const answers = document.createElement('div');
+    answers.className = 'result-item-answers';
+    answers.innerHTML = '<strong>Ваш ответ:</strong> ' + escapeHtml(r.userAnswer) + ' · <strong>Правильный:</strong> ' + escapeHtml(r.task.answer);
+    item.appendChild(answers);
+    if (!r.isCorrect) {
+      const sol = document.createElement('div');
+      sol.className = 'result-item-solution';
+      renderSolutionBlocks(sol, r.task.solution);
+      const solAnswer = document.createElement('p');
+      solAnswer.style.marginTop = '8px';
+      solAnswer.style.fontWeight = '600';
+      solAnswer.style.color = 'var(--text)';
+      solAnswer.textContent = 'Ответ: ' + r.task.answer;
+      sol.appendChild(solAnswer);
+      sol.appendChild(makeOriginalLink(r.task.num));
+      item.appendChild(sol);
+    }
+    panel.appendChild(item);
+  });
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function switchTab(tabName) {
+  state.currentTab = tabName;
+  document.querySelectorAll('.tab').forEach(t => {
+    const isActive = t.dataset.tab === tabName;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  if (tabName === 'theory') renderTheory();
+  else if (tabName === 'practice1') renderPractice1();
+  else if (tabName === 'practice2') renderPractice2();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+  });
+  renderTheory();
+}
+
+init();
+</script>
+</body>
+</html>
