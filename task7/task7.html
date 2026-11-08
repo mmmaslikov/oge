@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ Информатика — Задание 7. Информационно-коммуникационные технологии</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f5f5f7;
+  --bg-card: #ffffff;
+  --text: #1d1d1f;
+  --text-soft: #515154;
+  --text-muted: #86868b;
+  --border: #d2d2d7;
+  --border-soft: #e8e8ed;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-soft: #e8f4fd;
+  --success: #34c759;
+  --success-soft: #eafaf1;
+  --error: #ff3b30;
+  --error-soft: #fff0ef;
+  --warning: #ff9500;
+  --warning-soft: #fff8eb;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg-soft);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body { padding: 16px; }
+.container { max-width: 1000px; margin: 0 auto; }
+.header { background: var(--bg-card); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); }
+.header-title { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.header-sub { color: var(--text-soft); font-size: 15px; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; font-size: 13px; color: var(--text-muted); }
+.header-meta span { display: flex; align-items: center; gap: 6px; }
+.tabs { display: flex; gap: 8px; background: var(--bg-card); padding: 8px; border-radius: var(--radius); margin-bottom: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); overflow-x: auto; }
+.tab { flex: 1; min-width: 140px; padding: 12px 16px; border: none; background: transparent; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--text-soft); cursor: pointer; transition: all 0.2s; font-family: inherit; white-space: nowrap; }
+.tab:hover { background: var(--bg-soft); color: var(--text); }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tab.active { background: var(--accent); color: white; box-shadow: var(--shadow-sm); }
+.card { background: var(--bg-card); border-radius: var(--radius); padding: 26px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-soft); }
+.card-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em; }
+h3 { font-size: 17px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+p { margin-bottom: 12px; color: var(--text-soft); }
+p:last-child { margin-bottom: 0; }
+ul, ol { margin: 10px 0 14px 24px; color: var(--text-soft); }
+li { margin-bottom: 6px; }
+strong { color: var(--text); font-weight: 600; }
+/* Встроенные упоминания — стандартный шрифт, жирный */
+code { font-family: inherit; font-size: inherit; font-weight: 700; color: var(--text); background: transparent; padding: 0; border-radius: 0; }
+.note { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 10px; margin: 16px 0; font-size: 14px; color: var(--text); }
+.note-warn { background: var(--warning-soft); border-left-color: var(--warning); }
+.note-success { background: var(--success-soft); border-left-color: var(--success); }
+.note-info { background: #f0f9ff; border-left-color: #0ea5e9; }
+/* Плашка-эталон адреса по центру карточки */
+.address-pattern { display: block; width: fit-content; margin: 16px auto; padding: 12px 28px; text-align: center; background: var(--accent-soft); border: 1.5px dashed var(--accent); border-radius: 12px; font-weight: 700; font-size: 15px; letter-spacing: 0.08em; color: var(--text); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 20px; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.15s; min-height: 44px; min-width: 44px; text-decoration: none; }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--bg-soft); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border-soft); }
+.btn-block { width: 100%; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.task { background: var(--bg-card); border-radius: var(--radius); padding: 22px; margin-bottom: 16px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm); }
+.task-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+.task-num { font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 20px; }
+.task-text { color: var(--text); font-size: 15px; margin-bottom: 14px; line-height: 1.65; }
+/* Фрагменты в столбик: стандартный шрифт, жирное значение */
+.frag-list { margin: 12px 0 14px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.frag-item { font-family: inherit; font-size: 14px; font-weight: 600; color: var(--text); background: var(--bg-soft); border: 1px solid var(--border-soft); border-radius: 8px; padding: 6px 14px; }
+.frag-letter { font-weight: 700; color: var(--accent); margin-right: 10px; }
+/* Таблица фрагментов IP: стандартный шрифт, полужирный */
+.ip-table { border-collapse: collapse; margin: 12px 0 14px; font-size: 14px; background: var(--bg-card); }
+.ip-table td { border: 1px solid var(--border); padding: 9px 18px; text-align: center; font-family: inherit; font-weight: 600; color: var(--text); }
+.ip-table tr.letters td { background: var(--bg-soft); font-weight: 700; }
+.input-group { margin-top: 14px; }
+.input-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-soft); margin-bottom: 6px; }
+.input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--bg-card); color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; min-height: 44px; }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.input.correct { border-color: var(--success); background: var(--success-soft); }
+.input.wrong { border-color: var(--error); background: var(--error-soft); }
+.feedback { margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 14px; display: none; }
+.feedback.show { display: block; }
+.feedback.success { background: var(--success-soft); color: #1b7a3d; border: 1px solid #b7ebc9; }
+.feedback.error { background: var(--error-soft); color: #c41e14; border: 1px solid #f5c6c2; }
+.solution { margin-top: 12px; padding: 16px 18px; background: var(--bg-soft); border-radius: var(--radius-sm); border-left: 3px solid var(--accent); font-size: 14px; line-height: 1.7; display: none; }
+.solution.show { display: block; }
+.solution-title { font-weight: 600; margin-bottom: 8px; color: var(--text); }
+.solution p { margin-bottom: 10px; }
+.solution p:last-child { margin-bottom: 0; }
+.solution .formula { font-weight: 700; color: var(--text); font-family: "Consolas", "Monaco", monospace; background: var(--bg-card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+/* Незаметная ссылка на оригинал внутри решения */
+.solution-link { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--text-muted); text-decoration: none; }
+.solution-link:hover { color: var(--accent); text-decoration: underline; }
+.results-panel { background: var(--bg-card); border-radius: var(--radius); padding: 24px; margin-top: 20px; border: 1px solid var(--border-soft); box-shadow: var(--shadow); display: none; }
+.results-panel.show { display: block; }
+.results-score { text-align: center; padding: 22px; background: var(--accent-soft); border-radius: var(--radius-sm); margin-bottom: 16px; }
+.results-score-num { font-size: 52px; font-weight: 700; color: var(--accent); line-height: 1; }
+.results-score-label { font-size: 14px; color: var(--text-soft); margin-top: 6px; }
+.progress-bar { height: 6px; background: var(--border-soft); border-radius: 3px; overflow: hidden; margin: 12px 0; }
+.progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+.result-item { padding: 14px 16px; border-radius: var(--radius-sm); margin-bottom: 8px; border: 1px solid var(--border); font-size: 14px; }
+.result-item.correct { background: var(--success-soft); border-color: #b7ebc9; }
+.result-item.wrong { background: var(--error-soft); border-color: #f5c6c2; }
+.result-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
+.result-item-num { font-weight: 600; color: var(--text); }
+.result-item-status { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+.result-item-status.correct { background: var(--success); color: white; }
+.result-item-status.wrong { background: var(--error); color: white; }
+.result-item-answers { font-size: 13px; color: var(--text-soft); }
+.result-item-answers strong { color: var(--text); }
+.result-item-solution { margin-top: 10px; font-size: 13px; color: var(--text-soft); line-height: 1.7; }
+.result-item-solution p { margin-bottom: 8px; }
+.footer { text-align: center; padding: 20px; font-size: 13px; color: var(--text-muted); margin-top: 20px; }
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.section-desc { font-size: 14px; color: var(--text-muted); }
+@media (max-width: 640px) {
+  .header-title { font-size: 24px; }
+  .ip-table td { padding: 7px 10px; }
+  .address-pattern { font-size: 13px; padding: 10px 18px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1 class="header-title">Задание 7. Информационно-коммуникационные технологии</h1>
+    <p class="header-sub">Подготовка к ОГЭ по информатике · 9 класс</p>
+    <div class="header-meta">
+      <span>👨‍🏫 Учитель: Масликов М.М.</span>
+      <span>⏱ Время: 2 урока (80 мин)</span>
+      <span>📚 20 заданий</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="theory" role="tab" aria-selected="true">📖 Теория</button>
+    <button class="tab" data-tab="practice1" role="tab" aria-selected="false">⚡ Практика 1</button>
+    <button class="tab" data-tab="practice2" role="tab" aria-selected="false">📝 Практика 2</button>
+  </nav>
+
+  <main id="app"></main>
+
+  <footer class="footer">
+    <p>Практические задания оформлены по материалам <a href="https://inf-oge.sdamgia.ru" target="_blank" rel="noopener">Решу ОГЭ (Сдам ГИА)</a></p>
+    <p style="margin-top:6px;">© 2026 · Учебный материал для подготовки к ОГЭ</p>
+  </footer>
+</div>
+
+<script>
+const TASKS = [
+  {
+    id: 1, num: 5276,
+    text: 'Почтовый ящик <strong>teacher</strong> находится на сервере <strong>shkola1.mos.ru</strong>. Фрагменты адреса электронной почты закодированы цифрами от 1 до 6. Запишите последовательность цифр, кодирующую этот адрес.',
+    frags: [['1', '@'], ['2', '.ru'], ['3', 'shkola1'], ['4', '.'], ['5', 'teacher'], ['6', 'mos']],
+    answer: '513462',
+    solution: 'Вспомним, как формируется почтовый адрес: сначала имя почтового ящика, затем символ «@», затем сервер, на котором находится почтовый ящик. Таким образом, искомый адрес: <strong>teacher@shkola1.mos.ru</strong>.\n\nСопоставим фрагменты с частями адреса по порядку: teacher — 5, @ — 1, shkola1 — 3, точка — 4, mos — 6, .ru — 2. Читая цифры в порядке частей адреса, получаем искомую последовательность.'
+  },
+  {
+    id: 2, num: 1028,
+    text: 'Доступ к файлу <strong>kassa.xls</strong>, находящемуся на сервере <strong>magazin.com</strong>, осуществляется по протоколу <strong>http</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', 'kassa'], ['Б', '://'], ['В', '/'], ['Г', 'com'], ['Д', 'http'], ['Е', 'magazin.'], ['Ж', '.xls']],
+    answer: 'ДБЕГВАЖ',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол, потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>http://magazin.com/kassa.xls</strong>.\n\nЗаменим части адреса буквами по порядку: http — Д, :// — Б, magazin. — Е, com — Г, / — В, kassa — А, .xls — Ж. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 3, num: 478,
+    text: 'На месте преступления были обнаружены четыре обрывка бумаги. Следствие установило, что на них записаны фрагменты одного IP-адреса. Криминалисты обозначили эти фрагменты буквами А, Б, В и Г. Восстановите IP-адрес. В ответе укажите последовательность букв, обозначающих фрагменты, в порядке, соответствующем IP-адресу.',
+    ip: { frags: ['4.243', '116.2', '13', '.23'], letters: ['А', 'Б', 'В', 'Г'] },
+    answer: 'БВГА',
+    solution: 'IP-адрес представляет собой четыре разделённых точками чисел, каждое из которых не больше 255.\n\nПод буквой А указано «4.243». Так как числа в IP-адресе не могут быть больше 255, нельзя добавить в конце этого числа ещё один разряд. Следовательно, этот фрагмент — последний. Рассмотрим фрагмент под буквой Б: так как числа в IP-адресе не могут быть больше 255, фрагмент Б должен быть на первом месте. В конце фрагмента Г — число 23, отделённое точкой: за фрагментом Г должен следовать фрагмент, начинающийся с цифры. Значит, фрагмент Г идёт перед фрагментом А.\n\nПроверка склейкой: 116.2 + 13 + .23 + 4.243 = 116.213.234.243 — корректный IP-адрес.'
+  },
+  {
+    id: 4, num: 658,
+    text: 'Доступ к файлу <strong>book.jpg</strong>, находящемуся на сервере <strong>biblioteka.ru</strong>, осуществляется по протоколу <strong>http</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', '.jpg'], ['Б', '://'], ['В', 'biblioteka.'], ['Г', 'http'], ['Д', 'book'], ['Е', '/'], ['Ж', 'ru']],
+    answer: 'ГБВЖЕДА',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило, это «ftp» или «http»), потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>http://biblioteka.ru/book.jpg</strong>.\n\nЗаменим части адреса буквами по порядку: http — Г, :// — Б, biblioteka. — В, ru — Ж, / — Е, book — Д, .jpg — А. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 5, num: 498,
+    text: 'На месте преступления были обнаружены четыре обрывка бумаги. Следствие установило, что на них записаны фрагменты одного IP-адреса. Криминалисты обозначили эти фрагменты буквами А, Б, В и Г. Восстановите IP-адрес. В ответе укажите последовательность букв, обозначающих фрагменты, в порядке, соответствующем IP-адресу.',
+    ip: { frags: ['2.12', '22', '.30', '5.121'], letters: ['А', 'Б', 'В', 'Г'] },
+    answer: 'БАГВ',
+    solution: 'IP-адрес представляет собой четыре разделённых точками чисел, каждое из которых не больше 255.\n\nПод буквой В указано «.30». Так как числа в IP-адресе не могут быть больше 255, нельзя добавить в конце этого числа ещё один разряд. Следовательно, этот фрагмент — последний. Рассмотрим фрагмент под буквой Б: так как числа в IP-адресе не могут быть больше 255, фрагмент Б должен быть на первом месте. В конце фрагмента Г — число 121, отделённое точкой: за фрагментом Г должен следовать фрагмент, начинающийся с точки. Значит, фрагмент Г идёт перед фрагментом В.\n\nПроверка склейкой: 22 + 2.12 + 5.121 + .30 = 222.125.121.30 — корректный IP-адрес.'
+  },
+  {
+    id: 6, num: 237,
+    text: 'Доступ к файлу <strong>spis.xml</strong>, находящемуся на сервере <strong>book.net</strong>, осуществляется по протоколу <strong>ftp</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', '.net'], ['Б', '/'], ['В', 'ftp'], ['Г', 'spis'], ['Д', '://'], ['Е', 'book'], ['Ж', '.xml']],
+    answer: 'ВДЕАБГЖ',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило, это «ftp» или «http»), потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>ftp://book.net/spis.xml</strong>.\n\nЗаменим части адреса буквами по порядку: ftp — В, :// — Д, book — Е, .net — А, / — Б, spis — Г, .xml — Ж. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 7, num: 4940,
+    text: 'На сервере <strong>GorodN.ru</strong> находится почтовый ящик <strong>wait_for_mail</strong>. Фрагменты адреса электронной почты закодированы буквами от А до Е. Запишите последовательность букв, кодирующую этот адрес.',
+    frags: [['А', 'GorodN'], ['Б', 'mail'], ['В', 'for_'], ['Г', '.ru'], ['Д', 'wait_'], ['Е', '@']],
+    answer: 'ДВБЕАГ',
+    solution: 'Вспомним, как формируется почтовый адрес: сначала указывается имя почтового ящика, потом «@», потом сервер, на котором находится почтовый ящик. Таким образом, искомый адрес: <strong>wait_for_mail@GorodN.ru</strong>.\n\nСопоставим фрагменты с частями адреса по порядку: wait_ — Д, for_ — В, mail — Б, @ — Е, GorodN — А, .ru — Г. Читая обозначения в порядке частей адреса, получаем искомую последовательность.'
+  },
+  {
+    id: 8, num: 518,
+    text: 'Миша записал IP-адрес школьного сервера на листке бумаги и положил его в карман куртки. Мишина мама случайно постирала куртку вместе с запиской. После стирки Миша обнаружил в кармане четыре обрывка с фрагментами IP-адреса. Эти фрагменты обозначены буквами А, Б, В и Г. Восстановите IP-адрес. В ответе укажите последовательность букв, обозначающих фрагменты, в порядке, соответствующем IP-адресу.',
+    ip: { frags: ['17', '.44', '4.144', '9.13'], letters: ['А', 'Б', 'В', 'Г'] },
+    answer: 'АГВБ',
+    solution: 'IP-адрес представляет собой четыре разделённых точками чисел, каждое из которых не больше 255.\n\nПод буквой Б указано «.44». Так как числа в IP-адресе не могут быть больше 255, нельзя добавить в конце этого числа ещё один разряд. Следовательно, этот фрагмент — последний. В конце фрагмента В — число 144, отделённое точкой: за фрагментом В должен следовать фрагмент, начинающийся с точки. Значит, фрагмент В идёт перед фрагментом Б. Фрагмент под буквой Г не может быть первым, поскольку в таком случае за ним вынужден стоять фрагмент А, а в IP-адресе не может быть числа, большего 255 (получилось бы 1317).\n\nПроверка склейкой: 17 + 9.13 + 4.144 + .44 = 179.134.144.44 — корректный IP-адрес.'
+  },
+  {
+    id: 9, num: 277,
+    text: 'Доступ к файлу <strong>rus.doc</strong>, находящемуся на сервере <strong>obr.org</strong>, осуществляется по протоколу <strong>https</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', 'obr.'], ['Б', '/'], ['В', 'org'], ['Г', '://'], ['Д', 'doc'], ['Е', 'rus.'], ['Ж', 'https']],
+    answer: 'ЖГАВБЕД',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол, потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>https://obr.org/rus.doc</strong>.\n\nЗаменим части адреса буквами по порядку: https — Ж, :// — Г, obr. — А, org — В, / — Б, rus. — Е, doc — Д. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 10, num: 177,
+    text: 'Доступ к файлу <strong>color.gif</strong>, находящемуся на сервере <strong>box.net</strong>, осуществляется по протоколу <strong>ftp</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', 'ftp'], ['Б', '/'], ['В', 'box.'], ['Г', 'color'], ['Д', 'net'], ['Е', '.gif'], ['Ж', '://']],
+    answer: 'АЖВДБГЕ',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило, это «ftp» или «http»), потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>ftp://box.net/color.gif</strong>.\n\nЗаменим части адреса буквами по порядку: ftp — А, :// — Ж, box. — В, net — Д, / — Б, color — Г, .gif — Е. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 11, num: 458,
+    text: 'На месте преступления были обнаружены четыре обрывка бумаги. Следствие установило, что на них записаны фрагменты одного IP-адреса. Криминалисты обозначили эти фрагменты буквами А, Б, В и Г. Восстановите IP-адрес. В ответе укажите последовательность букв, обозначающих фрагменты, в порядке, соответствующем IP-адресу.',
+    ip: { frags: ['2.17', '16', '.65', '8.121'], letters: ['А', 'Б', 'В', 'Г'] },
+    answer: 'БАГВ',
+    solution: 'IP-адрес представляет собой четыре разделённых точками чисел, каждое из которых не больше 255.\n\nПод буквой В указано «.65». Так как числа в IP-адресе не могут быть больше 255, нельзя добавить в конце этого числа ещё один разряд. Следовательно, этот фрагмент — последний. Рассмотрим фрагмент под буквой Б: так как числа в IP-адресе не могут быть больше 255, фрагмент Б должен быть на первом месте. В конце фрагмента Г — число 121, отделённое точкой: за фрагментом Г должен следовать фрагмент, начинающийся с точки. Значит, фрагмент Г идёт перед фрагментом В.\n\nПроверка склейкой: 16 + 2.17 + 8.121 + .65 = 162.178.121.65 — корректный IP-адрес.'
+  },
+  {
+    id: 12, num: 875,
+    text: 'Доступ к файлу <strong>table.xls</strong>, находящемуся на сервере <strong>sch.com</strong>, осуществляется по протоколу <strong>https</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', 'com'], ['Б', 'https'], ['В', '://'], ['Г', 'sch.'], ['Д', '.xls'], ['Е', 'table'], ['Ж', '/']],
+    answer: 'БВГАЖЕД',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол, потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>https://sch.com/table.xls</strong>.\n\nЗаменим части адреса буквами по порядку: https — Б, :// — В, sch. — Г, com — А, / — Ж, table — Е, .xls — Д. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 13, num: 781,
+    text: 'Доступ к файлу <strong>widow.mp3</strong>, находящемуся на сервере <strong>spiders.ru</strong>, осуществляется по протоколу <strong>http</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', '/'], ['Б', 'http'], ['В', 'spiders.'], ['Г', '://'], ['Д', 'ru'], ['Е', '.mp3'], ['Ж', 'widow']],
+    answer: 'БГВДАЖЕ',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол, потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>http://spiders.ru/widow.mp3</strong>.\n\nЗаменим части адреса буквами по порядку: http — Б, :// — Г, spiders. — В, ru — Д, / — А, widow — Ж, .mp3 — Е. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 14, num: 578,
+    text: 'Доступ к файлу <strong>fish.gif</strong>, находящемуся на сервере <strong>cafe.com</strong>, осуществляется по протоколу <strong>http</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', 'http'], ['Б', '://'], ['В', 'com'], ['Г', '.gif'], ['Д', 'fish'], ['Е', '/'], ['Ж', 'cafe.']],
+    answer: 'АБЖВЕДГ',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило, это «ftp» или «http»), потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>http://cafe.com/fish.gif</strong>.\n\nЗаменим части адреса буквами по порядку: http — А, :// — Б, cafe. — Ж, com — В, / — Е, fish — Д, .gif — Г. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 15, num: 12856,
+    text: 'Доступ к файлу <strong>pas.cpp</strong>, находящемуся на сервере <strong>com.edu</strong>, осуществляется по протоколу <strong>ftp</strong>. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите в ответе последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['1', 'com'], ['2', '.edu'], ['3', 'pas'], ['4', '.cpp'], ['5', '/'], ['6', '://'], ['7', 'ftp']],
+    answer: '7612534',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило, это «ftp» или «http»), потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>ftp://com.edu/pas.cpp</strong>.\n\nЗаменим части адреса цифрами по порядку: ftp — 7, :// — 6, com — 1, .edu — 2, / — 5, pas — 3, .cpp — 4. Читая обозначения слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 16, num: 678,
+    text: 'Доступ к файлу <strong>teach.ru</strong>, находящемуся на сервере <strong>school.org</strong>, осуществляется по протоколу <strong>ftp</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', '.ru'], ['Б', ':/'], ['В', 'ftp'], ['Г', '/school'], ['Д', '/'], ['Е', '.org'], ['Ж', 'teach']],
+    answer: 'ВБГЕДЖА',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило, это «ftp» или «http»), потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>ftp://school.org/teach.ru</strong>. Обратим внимание: фрагмент Б содержит только «:/», а второй слэш даёт фрагмент Г «/school».\n\nЗаменим части адреса буквами по порядку: ftp — В, :/ — Б, /school — Г, .org — Е, / — Д, teach — Ж, .ru — А. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 17, num: 157,
+    text: 'Доступ к файлу <strong>spis.htm</strong>, находящемуся на сервере <strong>sch.net</strong>, осуществляется по протоколу <strong>ftp</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', '://'], ['Б', 'spis'], ['В', '.net'], ['Г', '.htm'], ['Д', 'ftp'], ['Е', 'sch'], ['Ж', '/']],
+    answer: 'ДАЕВЖБГ',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило, это «ftp» или «http»), потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>ftp://sch.net/spis.htm</strong>.\n\nЗаменим части адреса буквами по порядку: ftp — Д, :// — А, sch — Е, .net — В, / — Ж, spis — Б, .htm — Г. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 18, num: 438,
+    text: 'Доступ к файлу <strong>com.pas</strong>, находящемуся на сервере <strong>net.ru</strong>, осуществляется по протоколу <strong>http</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', '://'], ['Б', '/'], ['В', '.pas'], ['Г', 'net'], ['Д', '.ru'], ['Е', 'http'], ['Ж', 'com']],
+    answer: 'ЕАГДБЖВ',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило, это «ftp» или «http»), потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>http://net.ru/com.pas</strong>.\n\nЗаменим части адреса буквами по порядку: http — Е, :// — А, net — Г, .ru — Д, / — Б, com — Ж, .pas — В. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 19, num: 97,
+    text: 'Доступ к файлу <strong>book.txt</strong>, находящемуся на сервере <strong>bibl.ru</strong>, осуществляется по протоколу <strong>http</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', '://'], ['Б', 'book.'], ['В', 'bibl'], ['Г', 'txt'], ['Д', '.ru'], ['Е', 'http'], ['Ж', '/']],
+    answer: 'ЕАВДЖБГ',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило, это «ftp» или «http»), потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>http://bibl.ru/book.txt</strong>.\n\nЗаменим части адреса буквами по порядку: http — Е, :// — А, bibl — В, .ru — Д, / — Ж, book. — Б, txt — Г. Читая буквы слева направо, получаем искомую последовательность.'
+  },
+  {
+    id: 20, num: 1171,
+    text: 'Доступ к файлу <strong>com.xls</strong>, находящемуся на сервере <strong>tt.com</strong>, осуществляется по протоколу <strong>http</strong>. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.',
+    frags: [['А', 'com'], ['Б', 'xls'], ['В', 'com.'], ['Г', 'http'], ['Д', 'tt.'], ['Е', '/'], ['Ж', '://']],
+    answer: 'ГЖДАЕВБ',
+    solution: 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол, потом «://», затем сервер, затем «/», название файла указывается в конце. Таким образом, адрес: <strong>http://tt.com/com.xls</strong>.\n\nЗаменим части адреса буквами по порядку: http — Г, :// — Ж, tt. — Д, com — А, / — Е, com. — В, xls — Б. Читая буквы слева направо, получаем искомую последовательность.'
+  }
+];
+
+const state = {
+  currentTab: 'theory',
+  answers1: {}, showSolution1: {},
+  answers2: {}, results2: null
+};
+
+function normalizeAnswer(str) {
+  return (str || '').toUpperCase().replace(/[^A-ZА-Я0-9]/g, '');
+}
+
+function makeOriginalLink(num) {
+  const a = document.createElement('a');
+  a.className = 'solution-link';
+  a.href = 'https://inf-oge.sdamgia.ru/problem?id=' + num;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.textContent = 'Оригинал задания ↗';
+  return a;
+}
+
+function renderFragments(task) {
+  if (task.ip) {
+    const table = document.createElement('table');
+    table.className = 'ip-table';
+    const rowF = document.createElement('tr');
+    task.ip.frags.forEach(f => {
+      const td = document.createElement('td');
+      td.textContent = f;
+      rowF.appendChild(td);
+    });
+    table.appendChild(rowF);
+    const rowL = document.createElement('tr');
+    rowL.className = 'letters';
+    task.ip.letters.forEach(l => {
+      const td = document.createElement('td');
+      td.textContent = l;
+      rowL.appendChild(td);
+    });
+    table.appendChild(rowL);
+    return table;
+  }
+  const list = document.createElement('div');
+  list.className = 'frag-list';
+  task.frags.forEach(pair => {
+    const item = document.createElement('div');
+    item.className = 'frag-item';
+    const letter = document.createElement('span');
+    letter.className = 'frag-letter';
+    letter.textContent = pair[0] + ')';
+    item.appendChild(letter);
+    item.appendChild(document.createTextNode(pair[1]));
+    list.appendChild(item);
+  });
+  return list;
+}
+
+function renderSolutionBlocks(container, solutionText) {
+  solutionText.split('\n\n').forEach(part => {
+    const trimmed = part.trim();
+    if (!trimmed) return;
+    const p = document.createElement('p');
+    p.innerHTML = trimmed.replace(/\n/g, '<br>');
+    container.appendChild(p);
+  });
+}
+
+function renderTheory() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  const intro = document.createElement('section');
+  intro.className = 'card';
+  intro.innerHTML = `
+    <h2 class="card-title">Что проверяет задание 7</h2>
+    <p>В задании 7 нужно восстановить адрес по его фрагментам. Встречаются <strong>три типа заданий</strong>:</p>
+    <ul>
+      <li><strong>Тип 1.</strong> Восстановление IP-адреса;</li>
+      <li><strong>Тип 2.</strong> Кодировка адреса файла;</li>
+      <li><strong>Тип 3.</strong> Кодировка адреса почтового ящика.</li>
+    </ul>
+    <div class="note">
+      <strong>Важно:</strong> ответ записывается подряд — без пробелов, запятых и других разделителей. Для адресов файла и почты это последовательность букв (или цифр), для IP-адреса — последовательность букв обрывков.
+    </div>
+  `;
+  app.appendChild(intro);
+
+  const ipCard = document.createElement('section');
+  ipCard.className = 'card';
+  ipCard.innerHTML = `
+    <h2 class="card-title">Тип 1. Восстановление IP-адреса</h2>
+    <div class="address-pattern">ЧИСЛО.ЧИСЛО.ЧИСЛО.ЧИСЛО · каждое от 0 до 255</div>
+    <p><strong>IP-адрес</strong> — это четыре числа, разделённые точками, каждое от 0 до 255. Например: 192.168.0.1. В задании адрес «разорван» на четыре фрагмента, и нужно понять, в каком порядке их склеить.</p>
+    <h3>Правила рассуждения</h3>
+    <ul>
+      <li>Фрагмент, начинающийся с точки и заканчивающийся числом без точки, почти всегда <strong>последний</strong>: к числу нельзя дописать ещё один разряд, иначе оно превысит 255.</li>
+      <li>Фрагмент <strong>без точек</strong> (просто число) может стоять только <strong>первым</strong> или последним: внутри адреса каждое число обязано завершаться точкой.</li>
+      <li>Фрагмент, заканчивающийся точкой, склеивается с фрагментом, начинающимся с цифры, и наоборот.</li>
+      <li>Всегда проверяйте себя: склейте адрес и убедитесь, что получилось ровно четыре числа и каждое не больше 255.</li>
+    </ul>
+    <h3>Разбор примера (задание №538)</h3>
+    <p>Костя записал IP-адрес школьного сервера на листке бумаги и положил его в карман куртки. После стирки сохранились четыре обрывка:</p>
+    <table class="ip-table">
+      <tr><td>.33</td><td>3.232</td><td>3.20</td><td>23</td></tr>
+      <tr class="letters"><td>А</td><td>Б</td><td>В</td><td>Г</td></tr>
+    </table>
+    <p>Под буквой А указано «.33»: фрагмент начинается с точки и заканчивается числом без точки — он <strong>последний</strong>. В конце фрагмента Б — число 232, отделённое точкой: за ним должен идти фрагмент, начинающийся с точки, то есть А. Фрагмент Г («23») не содержит точек вовсе: он первый или последний, последнее место уже занято, значит, Г — <strong>первый</strong>. Оставшийся фрагмент В становится вторым.</p>
+    <p>Проверка склейкой: 23 + 3.20 + 3.232 + .33 = 233.203.232.33 — четыре числа, все не больше 255.</p>
+    <div class="note note-success"><strong>Ответ: ГВБА</strong></div>
+  `;
+  app.appendChild(ipCard);
+
+  const fileCard = document.createElement('section');
+  fileCard.className = 'card';
+  fileCard.innerHTML = `
+    <h2 class="card-title">Тип 2. Кодировка адреса файла</h2>
+    <div class="address-pattern">ПРОТОКОЛ://СЕРВЕР/ФАЙЛ</div>
+    <p><strong>Адрес файла в сети Интернет</strong> собирается по жёсткой схеме:</p>
+    <ol>
+      <li>протокол (<strong>http</strong>, <strong>https</strong>, <strong>ftp</strong>);</li>
+      <li>символы <strong>://</strong>;</li>
+      <li>сервер (например, <strong>zoo.org</strong>);</li>
+      <li>символ <strong>/</strong>;</li>
+      <li>имя файла (например, <strong>tiger.doc</strong>).</li>
+    </ol>
+    <h3>Разбор примера (задание №37)</h3>
+    <p>Доступ к файлу <strong>tiger.doc</strong>, находящемуся на сервере <strong>zoo.org</strong>, осуществляется по протоколу <strong>http</strong>. Фрагменты адреса закодированы буквами от А до Ж:</p>
+    <div class="frag-list">
+      <div class="frag-item"><span class="frag-letter">А)</span>.doc</div>
+      <div class="frag-item"><span class="frag-letter">Б)</span>zoo</div>
+      <div class="frag-item"><span class="frag-letter">В)</span>/</div>
+      <div class="frag-item"><span class="frag-letter">Г)</span>://</div>
+      <div class="frag-item"><span class="frag-letter">Д)</span>tiger</div>
+      <div class="frag-item"><span class="frag-letter">Е)</span>.org</div>
+      <div class="frag-item"><span class="frag-letter">Ж)</span>http</div>
+    </div>
+    <p>Составим адрес по схеме: <strong>http://zoo.org/tiger.doc</strong>. Теперь заменим части адреса буквами в порядке их следования: http — Ж, :// — Г, zoo — Б, .org — Е, / — В, tiger — Д, .doc — А.</p>
+    <div class="note note-success"><strong>Ответ: ЖГБЕВДА</strong></div>
+    <div class="note note-warn">
+      <strong>Подвох:</strong> фрагменты сервера и имени файла часто разорваны в неожиданных местах («magazin.» и «com», «book.» и «txt»). Сначала мысленно соберите полный адрес, и лишь потом расставляйте коды фрагментов.
+    </div>
+  `;
+  app.appendChild(fileCard);
+
+  const mailCard = document.createElement('section');
+  mailCard.className = 'card';
+  mailCard.innerHTML = `
+    <h2 class="card-title">Тип 3. Кодировка адреса почтового ящика</h2>
+    <div class="address-pattern">ЯЩИК@СЕРВЕР</div>
+    <p><strong>Адрес электронной почты</strong> имеет вид: <strong>имя_ящика@сервер</strong>, где сервер обычно состоит из имени и домена верхнего уровня: <strong>school.edu</strong>, <strong>mail.ru</strong>, <strong>gmail.com</strong>.</p>
+    <h3>Алгоритм решения</h3>
+    <ol>
+      <li>Выпишите из условия имя ящика и сервер.</li>
+      <li>Составьте полный адрес: имя, «@», сервер.</li>
+      <li>Пройдите по адресу слева направо и заменяйте каждую часть её кодом (цифрой или буквой).</li>
+      <li>Запишите получившуюся последовательность подряд.</li>
+    </ol>
+    <h3>Мини-пример</h3>
+    <p>Пусть почтовый ящик <strong>informatics</strong> находится на сервере <strong>school.edu</strong>, а фрагменты адреса закодированы так:</p>
+    <div class="frag-list">
+      <div class="frag-item"><span class="frag-letter">1)</span>.edu</div>
+      <div class="frag-item"><span class="frag-letter">2)</span>informatics</div>
+      <div class="frag-item"><span class="frag-letter">3)</span>@</div>
+      <div class="frag-item"><span class="frag-letter">4)</span>school</div>
+    </div>
+    <p>Полный адрес: <strong>informatics@school.edu</strong>. Заменяем части в порядке следования: informatics — 2, @ — 3, school — 4, .edu — 1.</p>
+    <div class="note note-success"><strong>Ответ: 2341</strong></div>
+    <div class="note note-info">
+      <strong>Подвох:</strong> имя ящика и сервер иногда сами разбиты на несколько фрагментов (например, wait_ и for_ и mail). Склеивайте их в правильном порядке, ориентируясь на символ «@»: всё до него — имя ящика, всё после — сервер.
+    </div>
+  `;
+  app.appendChild(mailCard);
+
+  const mistakes = document.createElement('section');
+  mistakes.className = 'card';
+  mistakes.innerHTML = `
+    <h2 class="card-title">Типичные ошибки</h2>
+    <ul>
+      <li>❌ Писать ответ с пробелами или запятыми — буквы и цифры идут подряд</li>
+      <li>❌ Путать порядок частей адреса файла: протокол → :// → сервер → / → файл</li>
+      <li>❌ Забывать, что в почтовом адресе «@» стоит между именем ящика и сервером</li>
+      <li>❌ В IP-адресах ставить фрагмент без точек в середину адреса или получать число больше 255</li>
+      <li>❌ Не проверять себя обратной склейкой адреса</li>
+    </ul>
+    <div class="note">
+      <strong>Совет:</strong> после получения последовательности всегда восстанавливайте адрес целиком и читайте его вслух — ошибка становится видна мгновенно.
+    </div>
+  `;
+  app.appendChild(mistakes);
+}
+
+function createTaskElement(task, num, mode) {
+  const taskEl = document.createElement('article');
+  taskEl.className = 'task';
+  taskEl.dataset.taskId = task.id;
+
+  const header = document.createElement('div');
+  header.className = 'task-header';
+  const numEl = document.createElement('span');
+  numEl.className = 'task-num';
+  numEl.textContent = 'Задание ' + num + ' №' + task.num;
+  header.appendChild(numEl);
+  taskEl.appendChild(header);
+
+  const textEl = document.createElement('p');
+  textEl.className = 'task-text';
+  textEl.innerHTML = task.text.replace(/\n/g, '<br>');
+  taskEl.appendChild(textEl);
+
+  taskEl.appendChild(renderFragments(task));
+
+  const inputGroup = document.createElement('div');
+  inputGroup.className = 'input-group';
+  const label = document.createElement('label');
+  label.className = 'input-label';
+  label.htmlFor = 'input-' + mode + '-' + task.id;
+  label.textContent = 'Ваш ответ (буквы или цифры подряд):';
+  inputGroup.appendChild(label);
+  const input = document.createElement('input');
+  input.className = 'input';
+  input.id = 'input-' + mode + '-' + task.id;
+  input.type = 'text';
+  input.autocomplete = 'off';
+  input.setAttribute('autocomplete', 'off');
+  input.setAttribute('autocorrect', 'off');
+  input.setAttribute('spellcheck', 'false');
+  input.setAttribute('data-lpignore', 'true');
+  input.placeholder = 'Например: АБВГДЕЖ или 1234567';
+  input.addEventListener('input', (e) => {
+    e.target.value = normalizeAnswer(e.target.value);
+    updateAnswer(mode, task.id, e.target.value);
+  });
+  inputGroup.appendChild(input);
+  taskEl.appendChild(inputGroup);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+  if (mode === 'practice1') {
+    const checkBtn = document.createElement('button');
+    checkBtn.className = 'btn btn-primary';
+    checkBtn.textContent = 'Проверить';
+    checkBtn.addEventListener('click', () => checkTask1(task.id));
+    btnRow.appendChild(checkBtn);
+    const solBtn = document.createElement('button');
+    solBtn.className = 'btn btn-secondary';
+    solBtn.textContent = 'Показать решение';
+    solBtn.addEventListener('click', () => toggleSolution1(task.id));
+    btnRow.appendChild(solBtn);
+  }
+  taskEl.appendChild(btnRow);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback';
+  feedback.id = 'feedback-' + task.id;
+  taskEl.appendChild(feedback);
+
+  const solution = document.createElement('div');
+  solution.className = 'solution';
+  solution.id = 'solution-' + task.id;
+  const solTitle = document.createElement('div');
+  solTitle.className = 'solution-title';
+  solTitle.textContent = 'Решение:';
+  solution.appendChild(solTitle);
+  renderSolutionBlocks(solution, task.solution);
+  const solAnswer = document.createElement('p');
+  solAnswer.style.marginTop = '10px';
+  solAnswer.style.fontWeight = '600';
+  solAnswer.style.color = 'var(--text)';
+  solAnswer.textContent = 'Ответ: ' + task.answer;
+  solution.appendChild(solAnswer);
+  solution.appendChild(makeOriginalLink(task.num));
+  taskEl.appendChild(solution);
+
+  return taskEl;
+}
+
+function renderPractice1() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">⚡ Практика 1</h2>
+      <p class="section-desc">10 заданий. После каждого можно сразу проверить ответ и посмотреть решение.</p>
+    </div>
+  `;
+  app.appendChild(head);
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice1-tasks';
+  app.appendChild(tasksBlock);
+  TASKS.slice(0, 10).forEach((task, idx) => {
+    tasksBlock.appendChild(createTaskElement(task, idx + 1, 'practice1'));
+  });
+}
+
+function renderPractice2() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">📝 Практика 2</h2>
+      <p class="section-desc">10 заданий. Ответы вводите сразу, но проверка — одной кнопкой в конце.</p>
+    </div>
+  `;
+  app.appendChild(head);
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice2-tasks';
+  app.appendChild(tasksBlock);
+  TASKS.slice(10, 20).forEach((task, idx) => {
+    tasksBlock.appendChild(createTaskElement(task, idx + 1, 'practice2'));
+  });
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn btn-primary btn-block';
+  checkBtn.textContent = '✓ Проверить все ответы';
+  checkBtn.style.marginTop = '8px';
+  checkBtn.addEventListener('click', checkAllPractice2);
+  app.appendChild(checkBtn);
+  const resultsPanel = document.createElement('div');
+  resultsPanel.className = 'results-panel';
+  resultsPanel.id = 'results-panel-2';
+  app.appendChild(resultsPanel);
+}
+
+function updateAnswer(mode, taskId, value) {
+  if (mode === 'practice1') {
+    state.answers1[taskId] = value;
+    state.showSolution1[taskId] = false;
+    const input = document.getElementById('input-practice1-' + taskId);
+    const fb = document.getElementById('feedback-' + taskId);
+    const sol = document.getElementById('solution-' + taskId);
+    if (input) input.classList.remove('correct', 'wrong');
+    if (fb) fb.classList.remove('show');
+    if (sol) sol.classList.remove('show');
+  } else {
+    state.answers2[taskId] = value;
+  }
+}
+
+function checkTask1(taskId) {
+  const task = TASKS.find(t => t.id === taskId);
+  if (!task) return;
+  const input = document.getElementById('input-practice1-' + taskId);
+  const feedback = document.getElementById('feedback-' + taskId);
+  if (!input || !feedback) return;
+  const userAnswer = normalizeAnswer(state.answers1[taskId]);
+  if (!userAnswer) {
+    feedback.className = 'feedback show error';
+    feedback.textContent = 'Введите ответ перед проверкой.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+    return;
+  }
+  if (userAnswer === task.answer) {
+    feedback.className = 'feedback show success';
+    feedback.textContent = '✓ Верно! Отличная работа.';
+    input.classList.remove('wrong');
+    input.classList.add('correct');
+  } else {
+    feedback.className = 'feedback show error';
+    feedback.textContent = '✗ Неверно. Правильный ответ: ' + task.answer + '. Посмотрите решение.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+  }
+}
+
+function toggleSolution1(taskId) {
+  state.showSolution1[taskId] = !state.showSolution1[taskId];
+  const sol = document.getElementById('solution-' + taskId);
+  if (sol) sol.classList.toggle('show', state.showSolution1[taskId]);
+}
+
+function checkAllPractice2() {
+  const results = [];
+  let correct = 0;
+  TASKS.slice(10, 20).forEach((task, idx) => {
+    const userAnswer = normalizeAnswer(state.answers2[task.id]);
+    const isCorrect = userAnswer === task.answer;
+    if (isCorrect) correct++;
+    results.push({ num: idx + 1, task, userAnswer: userAnswer || '—', isCorrect });
+  });
+  state.results2 = results;
+  renderResults2(results, correct);
+}
+
+function renderResults2(results, correct) {
+  const panel = document.getElementById('results-panel-2');
+  if (!panel) return;
+  panel.innerHTML = '';
+  panel.classList.add('show');
+  const score = document.createElement('div');
+  score.className = 'results-score';
+  score.innerHTML = `
+    <div class="results-score-num">${correct} / 10</div>
+    <div class="results-score-label">правильных ответов</div>
+  `;
+  panel.appendChild(score);
+  const progress = document.createElement('div');
+  progress.className = 'progress-bar';
+  const fill = document.createElement('div');
+  fill.className = 'progress-fill';
+  fill.style.width = (correct * 10) + '%';
+  progress.appendChild(fill);
+  panel.appendChild(progress);
+  results.forEach(r => {
+    const item = document.createElement('div');
+    item.className = 'result-item ' + (r.isCorrect ? 'correct' : 'wrong');
+    const head = document.createElement('div');
+    head.className = 'result-item-head';
+    const numEl = document.createElement('span');
+    numEl.className = 'result-item-num';
+    numEl.textContent = 'Задание ' + r.num + ' №' + r.task.num;
+    head.appendChild(numEl);
+    const status = document.createElement('span');
+    status.className = 'result-item-status ' + (r.isCorrect ? 'correct' : 'wrong');
+    status.textContent = r.isCorrect ? 'Верно' : 'Неверно';
+    head.appendChild(status);
+    item.appendChild(head);
+    const answers = document.createElement('div');
+    answers.className = 'result-item-answers';
+    answers.innerHTML = '<strong>Ваш ответ:</strong> ' + escapeHtml(r.userAnswer) + ' · <strong>Правильный:</strong> ' + escapeHtml(r.task.answer);
+    item.appendChild(answers);
+    if (!r.isCorrect) {
+      const sol = document.createElement('div');
+      sol.className = 'result-item-solution';
+      renderSolutionBlocks(sol, r.task.solution);
+      const solAnswer = document.createElement('p');
+      solAnswer.style.marginTop = '8px';
+      solAnswer.style.fontWeight = '600';
+      solAnswer.style.color = 'var(--text)';
+      solAnswer.textContent = 'Ответ: ' + r.task.answer;
+      sol.appendChild(solAnswer);
+      sol.appendChild(makeOriginalLink(r.task.num));
+      item.appendChild(sol);
+    }
+    panel.appendChild(item);
+  });
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function switchTab(tabName) {
+  state.currentTab = tabName;
+  document.querySelectorAll('.tab').forEach(t => {
+    const isActive = t.dataset.tab === tabName;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  if (tabName === 'theory') renderTheory();
+  else if (tabName === 'practice1') renderPractice1();
+  else if (tabName === 'practice2') renderPractice2();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+  });
+  renderTheory();
+}
+
+init();
+</script>
+</body>
+</html>
